@@ -1,0 +1,6 @@
+.sidebar {
+  display: flex;
+}
+.sidebar a:global(.active) {
+  background-color: var(--color-primary-dark);
+}

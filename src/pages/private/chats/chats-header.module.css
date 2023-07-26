@@ -1,0 +1,9 @@
+.filter {
+  display: flex;
+}
+.filter .active {
+  color: var(--color-primary);
+  font-weight: 700;
+  padding-bottom: 4px;
+  border-bottom: 3px solid var(--color-primary);
+}
