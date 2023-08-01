@@ -1,5 +1,4 @@
-import { lazy } from "react";
-
-const Friends = lazy(() => import("./contacts.container"));
-
-export { Friends };
+export * from "./contacts";
+export * from "./friend-requests";
+export * from "./groups";
+export * from "./friends";

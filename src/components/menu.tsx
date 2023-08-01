@@ -5,7 +5,7 @@ import { twMerge } from "tailwind-merge";
 
 import { createPortal } from "react-dom";
 import { HiDotsHorizontal } from "react-icons/hi";
-import useClickOutside from "src/hooks/useClickOutside";
+import useClickOutside from "src/hooks/useClickOutside.hook";
 interface IPosition {
   right: number;
   top: number;
@@ -117,16 +117,23 @@ const List = (props: IListProps) => {
 };
 const Option = ({
   onClick,
+  disable,
   children,
   className,
 }: {
   onClick: () => void;
+  disable?: boolean;
   className?: string;
   children: React.ReactNode;
 }) => {
+  const { close } = useMenuContext();
+  const handleClick = () => {
+    close();
+    onClick();
+  };
   return (
     <li>
-      <button className={className} onClick={onClick}>
+      <button disabled={disable} className={className} onClick={handleClick}>
         {children}
       </button>
     </li>

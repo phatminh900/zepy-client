@@ -1,16 +1,17 @@
 interface IAvatar {
-  size: "large" | "small" | "medium";
+  size: "large" | "small" | "medium" | "ex-large";
   src?: string;
 }
 const Avatar = ({ size, src }: IAvatar) => {
   const imgSize = {
+    "ex-large": "w-[56px] h-[56px]",
     large: "w-12 h-12",
     small: "w-4 h-4",
-    medium: "w-6 h-6",
+    medium: "w-10 h-10",
   };
   return (
     <div
-      className={`rounded-full ${imgSize[size]} overflow-hidden ring-1  ring-grey-50`}
+      className={`rounded-full w-12 ${imgSize[size]} overflow-hidden ring-1  ring-grey-50`}
     >
       <img
         src={src || "/imgs/default-user.jpg"}

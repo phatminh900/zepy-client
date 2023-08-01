@@ -1,10 +1,15 @@
+import { HiChevronLeft } from "react-icons/hi";
 import Avatar from "src/components/avatar";
+import RowHeader from "../row-header/row-header.component";
 
 const Chat = () => {
   return (
     <div>
       {/* Header */}
-      <div className="flex gap-3">
+      <RowHeader>
+        <button>
+          <HiChevronLeft />
+        </button>
         <Avatar size="large" />
         <div className="flex-1">
           <div className="flex justify-between">
@@ -21,7 +26,7 @@ const Chat = () => {
             </span>
           </div>
         </div>
-      </div>
+      </RowHeader>
     </div>
   );
 };

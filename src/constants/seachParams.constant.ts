@@ -1,4 +1,5 @@
 export enum PARAMS {
-  isOpenChat = "isOpenChat",
+  isOpenTab = "isOpenTab",
   unRead = "unRead",
+  email = "email",
 }

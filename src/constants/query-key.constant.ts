@@ -1,0 +1,6 @@
+export enum QueryKey {
+  USER = "user",
+  FRIEND_SEARCH = "FRIEND_SEARCH",
+  FRIEND_REQUEST = "FRIEND_REQUEST",
+  ALL_FRIENDS = "ALL_FRIENDS",
+}
