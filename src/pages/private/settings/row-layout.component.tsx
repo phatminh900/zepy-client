@@ -10,7 +10,9 @@ const RowLayout = ({
 }) => {
   return (
     <div className={twMerge("flex items-center mb-3", className)}>
-      <p className="max-w-[100px] w-full  font-semibold">{title}: </p>
+      <p className="text-sm md:text-base max-w-[100px] w-full  font-semibold">
+        {title}:{" "}
+      </p>
       {children}
     </div>
   );

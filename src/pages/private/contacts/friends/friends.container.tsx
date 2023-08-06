@@ -3,17 +3,15 @@ import { HiOutlineSearch } from "react-icons/hi";
 import { BiSort } from "react-icons/bi";
 import ReturnButtonTitle from "src/components/return-button-title";
 import RowHeader from "src/ui/row-header/row-header.component";
-import Friend from "./friend.component";
 import Select from "src/components/select";
 import { useGetAllFriend } from "src/features/contact/contact.hook";
 import { useGetUser } from "src/hooks/useAuth";
 import Loader from "src/ui/Loader";
+import FriendList from "./friend-list.component";
 
 const Friends = () => {
-  const { data } = useGetUser();
-  const { friends, isLoading } = useGetAllFriend(data.id);
-  console.log("----");
-  console.log(friends);
+  const { user } = useGetUser();
+  const { friends, isLoading } = useGetAllFriend(user!.id);
   return (
     <div>
       {isLoading ? (
@@ -56,18 +54,13 @@ const Friends = () => {
             </div>
             {/* List */}
             <div className="mt-3 overflow-y-scroll">
-              <ul className="">
-                {friends?.map(({ friend_profile, id }) => (
-                  <Friend
-                    id={friend_profile.id}
-                    gender={friend_profile.gender}
-                    email={friend_profile.email}
-                    fullname={friend_profile.fullname}
-                    avatar={friend_profile.avatar}
-                    key={id}
-                  />
-                ))}
-              </ul>
+              {!friends?.length ? (
+                <p className="text-center">Quickly add a new friend 🥰</p>
+              ) : (
+                <ul className="">
+                  <FriendList friends={friends} />
+                </ul>
+              )}
             </div>
           </div>
         </>

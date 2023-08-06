@@ -7,14 +7,14 @@ import { useGetUser } from "src/hooks/useAuth";
 import { useUpdateUserInfo } from "src/features/user/user-feature.hook";
 
 const PersonalSettings = () => {
-  const { data, refetch } = useGetUser();
+  const { user, refetch } = useGetUser();
   const { isLoading: isUpdatingName, updateInfo: updateName } =
     useUpdateUserInfo("fullname");
   const { isLoading: isUpdatingGender, updateInfo: updateGender } =
     useUpdateUserInfo("gender");
 
-  const [fullName, setFullName] = useState(data.fullname);
-  const [gender, setGender] = useState(data.gender);
+  const [fullName, setFullName] = useState(user!.fullname);
+  const [gender, setGender] = useState(user!.gender);
 
   const [isOpenDayPicker, setIsOpenDayPicker] = useState(false);
   const open = () => setIsOpenDayPicker(true);
@@ -22,16 +22,16 @@ const PersonalSettings = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // equal the same old result
-    if (fullName === data.fullname && gender === data.gender) return;
-    if (fullName !== data.fullname) {
+    if (fullName === user!.fullname && gender === user!.gender) return;
+    if (fullName !== user!.fullname) {
       updateName(
-        { userId: data.id, value: fullName },
+        { userId: user!.id, value: fullName },
         { onSuccess: () => refetch() }
       );
     }
-    if (gender !== data.gender) {
+    if (gender !== user!.gender) {
       updateGender(
-        { userId: data.id, value: gender },
+        { userId: user!.id, value: gender },
         { onSuccess: () => refetch() }
       );
     }
@@ -53,7 +53,7 @@ const PersonalSettings = () => {
             <div className="py-2.5 px-2 bg-[var(--color-grey-200)] ">
               <input
                 type="text"
-                defaultValue={data.fullname}
+                defaultValue={user!.fullname}
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />

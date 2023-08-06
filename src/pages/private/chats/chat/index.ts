@@ -1,5 +1,6 @@
 // Page lever
 import { lazy } from "react";
-const Chat = lazy(() => import("./chat.container"));
+import Chat from "./chat.container";
+// const Chat = lazy(() => import("./chat.container"));
 
 export { Chat };

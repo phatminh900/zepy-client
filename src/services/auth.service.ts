@@ -58,5 +58,5 @@ export const getUser = async () => {
     .eq("id", session.data.session?.user.id)
     .single();
   if (!user) return null;
-  return user;
+  return user as User;
 };

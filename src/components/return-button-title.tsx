@@ -12,13 +12,15 @@ const ReturnButtonTitle = ({
 }) => {
   const navigate = useNavigate();
   return (
-    <div className={`${twMerge("flex items-center gap-1.5", className)}`}>
+    <div
+      className={`${twMerge("flex items-center gap-1 md:gap-1.5", className)}`}
+    >
       <button
         onClick={() => {
           navigate(-1);
           onClick?.();
         }}
-        className="text-3xl w-10 h-10 hover:bg-[var(--color-grey-200)] flex items-center justify-center rounded-full"
+        className="text-3xl w-6 h-6 md:w-10  md:h-10 hover:bg-[var(--color-grey-200)] flex items-center justify-center rounded-full"
       >
         <HiChevronLeft />
       </button>

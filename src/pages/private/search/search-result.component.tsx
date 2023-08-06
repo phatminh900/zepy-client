@@ -1,40 +1,25 @@
-import { useState, useEffect } from "react";
+// TODO: EXTRACT ALL LOGIN IN PAGE INTO ITS OWN HOOK
 import Avatar from "src/components/avatar";
-import useSearchContact from "./search-contact.hook";
-import { useSearchParams } from "react-router-dom";
-import { PARAMS } from "src/constants/seachParams.constant";
 import Modal from "src/components/modal";
 import Profile from "src/components/profile";
-import { useGetUser } from "src/hooks/useAuth";
-import {
-  useFriendRequest,
-  useGetFriendRequest,
-} from "src/features/contact/contact.hook";
+
+import useSearchResult from "./search-result.hook";
 
 const SearchResult = () => {
-  const { data: user } = useGetUser();
-  const { friendRequests } = useGetFriendRequest();
-  const [searchParams] = useSearchParams();
-  const email = searchParams.get(PARAMS.email) || "";
   const {
-    isFetching,
-    data: searchResult,
-    refetch,
     isFetched,
-  } = useSearchContact(email);
-  const { sendFriendRequest, isSendingFriendRequest } = useFriendRequest();
-  const [friend, setFriend] = useState<null | User>(null);
-
-  const isSentRequest = friendRequests?.some(
-    (contact) => contact.friendId === friend?.id
-  );
-  useEffect(() => {
-    if (!email) return;
-    refetch();
-  }, [email, refetch]);
-  useEffect(() => {
-    if (searchResult) setFriend(searchResult);
-  }, [searchResult]);
+    isFetching,
+    sendFriendRequest,
+    isSendingFriendRequest,
+    isAlreadyFriend,
+    isYourSelf,
+    handleOpenChat,
+    handleCancelRequest,
+    friend,
+    searchResult,
+    user,
+    isSentRequest,
+  } = useSearchResult();
   return (
     <Modal>
       <div className="p-[var(--gutter-left-component)]">
@@ -49,8 +34,8 @@ const SearchResult = () => {
                   <Avatar size="large" src={searchResult.avatar} />
                   <div className="space-y-1">
                     <h3 className="font-semibold">{searchResult.fullname}</h3>
-                    <p className="text-sm">
-                      Email :
+                    <p className="text-[10px] flex">
+                      Email:
                       <span className="text-[var(--color-primary)]">
                         {searchResult.email}
                       </span>
@@ -62,17 +47,28 @@ const SearchResult = () => {
           )}
         </ul>
         <Modal.Window name="contact-modal">
-          {friend && (
+          {friend && !isYourSelf && (
             <Profile
               isMutating={isSendingFriendRequest}
               fullName={friend.fullname}
               isSentRequest={isSentRequest}
-              // isFriend={isFriend}
+              isFriend={isAlreadyFriend}
+              onCancelRequest={handleCancelRequest}
+              onOpenChatConversation={handleOpenChat}
               onAddFriendRequest={() =>
-                sendFriendRequest({ userId: user.id, friendId: friend.id })
+                sendFriendRequest({ userId: user!.id, friendId: friend.id })
               }
               {...friend}
               isUser={false}
+            />
+          )}
+          {friend && isYourSelf && (
+            <Profile
+              isUser={true}
+              avatar={friend.avatar}
+              email={friend.email}
+              fullName={friend.fullname}
+              gender={friend.gender}
             />
           )}
         </Modal.Window>

@@ -6,6 +6,7 @@ const MainColumnInputWrapper = ({ children }: Children) => {
 
   return (
     <div
+      className="w-full"
       onClick={() =>
         navigate({
           pathname: ROUTES.SEARCH,

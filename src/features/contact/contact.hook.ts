@@ -17,20 +17,20 @@ import {
 } from "src/services/contact.service";
 import toast from "react-hot-toast";
 
-export const useGetFriendRequest = () => {
-  const { data: user } = useGetUser();
+export const useGetFriendRequests = () => {
+  const { user } = useGetUser();
   const { data: friendRequests } = useQuery({
-    queryKey: [QueryKey.FRIEND_REQUEST],
-    queryFn: () => getAllFriendRequests({ userId: user.id }),
+    queryKey: [QueryKey.FRIEND_REQUEST, QueryKey.SEND_FIEND_REQUEST],
+    queryFn: () => getAllFriendRequests({ userId: user!.id }),
   });
   return { friendRequests };
 };
 
 export const useGetRequestedFriend = () => {
-  const { data: user } = useGetUser();
+  const { user } = useGetUser();
   const { data: requestedFriend, isLoading } = useQuery({
     queryKey: [QueryKey.FRIEND_REQUEST],
-    queryFn: () => getAllRequestedFriend({ userId: user.id }),
+    queryFn: () => getAllRequestedFriend({ userId: user!.id }),
   });
   return { requestedFriend, isLoading };
 };
@@ -41,13 +41,15 @@ export const useFriendRequest = () => {
       mutationFn: sendFriendRequestApi,
       onSuccess: () => {
         toast.success("Sent a request to this friend");
-        query.invalidateQueries({ queryKey: [QueryKey.FRIEND_REQUEST] });
+        query.invalidateQueries({
+          queryKey: [QueryKey.FRIEND_REQUEST, QueryKey.SEND_FIEND_REQUEST],
+        });
       },
       onError: () => toast.error("There were some errors try again."),
     });
   const { mutate: acceptFriend, isLoading: isAcceptingFriend } = useMutation({
     mutationFn: acceptFriendApi,
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success("Successfully added a new friend");
       query.invalidateQueries({ queryKey: [QueryKey.FRIEND_REQUEST] });
     },
@@ -57,7 +59,7 @@ export const useFriendRequest = () => {
     mutationFn: deleteFriendApi,
     onSuccess: () => {
       toast.success("Successfully deleted this friend");
-      query.invalidateQueries({ queryKey: [QueryKey.FRIEND_REQUEST] });
+      query.invalidateQueries({ queryKey: [QueryKey.ALL_FRIENDS] });
     },
     onError: () => toast.error("There were some errors try again."),
   });

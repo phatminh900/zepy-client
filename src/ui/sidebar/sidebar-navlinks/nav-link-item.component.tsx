@@ -1,13 +1,17 @@
 import { NavLink } from "react-router-dom";
-
+import SmallNotification from "src/components/small-notification";
+import { twMerge } from "tailwind-merge";
 const NavLinkItem = ({
   path,
   icon,
   title,
   callback,
+  className,
+  notificationQuantity,
 }: {
+  notificationQuantity?: number;
   title: string;
-
+  className?: string;
   path: string;
   icon: React.ReactNode;
   callback?: () => void;
@@ -15,16 +19,27 @@ const NavLinkItem = ({
   return (
     <li
       key={path}
-      className=" cursor-pointer w-full flex items-center justify-center hover:bg-[var(--color-primary-dark)]"
+      className={twMerge(
+        "relative cursor-pointer w-full flex items-center justify-center hover:bg-[var(--color-primary-dark)]",
+        className
+      )}
     >
       <NavLink
         onClick={() => callback?.()}
         to={path}
         title={title}
-        className={"p-6 text-[var(--color-grey-0)] text-2xl"}
+        className={
+          "w-full p-4 flex justify-center items-center text-[var(--color-grey-0)] text-2xl"
+        }
       >
         {icon}
       </NavLink>
+      {notificationQuantity ? (
+        <SmallNotification
+          className="top-0 right-0 absolute"
+          quantity={notificationQuantity}
+        />
+      ) : null}
     </li>
   );
 };

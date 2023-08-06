@@ -1,0 +1,11 @@
+.userName {
+  overflow: hidden;
+}
+@media (max-width: 400px) {
+  .userName,
+  .status {
+    text-overflow: ellipsis;
+    max-width: 55px;
+    white-space: nowrap;
+  }
+}

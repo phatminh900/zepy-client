@@ -12,6 +12,8 @@ const Profile = ({
   gender,
   onChangeAvatar,
   onAddFriendRequest,
+  onOpenChatConversation,
+  onCancelRequest,
   isSentRequest,
   isFriend,
   isMutating,
@@ -19,6 +21,8 @@ const Profile = ({
   isMutating?: boolean;
   isSentRequest?: boolean;
   isFriend?: boolean;
+  onCancelRequest?: () => void;
+  onOpenChatConversation?: () => void;
   onChangeAvatar?: (e: React.ChangeEvent) => void;
   onAddFriendRequest?: () => void;
   email: string;
@@ -64,15 +68,25 @@ const Profile = ({
       </div>
       {!isUser && (
         <div className="flex justify-center mt-10 mb-4 gap-3">
-          {isFriend ? (
-            <Button variation="neutral" disabled={isMutating}>
+          {isFriend && (
+            <Button
+              onClick={onOpenChatConversation}
+              variation="neutral"
+              disabled={isMutating}
+            >
               Send a message
             </Button>
-          ) : isSentRequest ? (
-            <Button variation="neutral" disabled={isMutating}>
+          )}
+          {isSentRequest && (
+            <Button
+              onClick={onCancelRequest}
+              variation="neutral"
+              disabled={isMutating}
+            >
               Cancel Request
             </Button>
-          ) : (
+          )}
+          {!isFriend && !isSentRequest && (
             <Button
               disabled={isMutating}
               onClick={() => onAddFriendRequest?.()}
@@ -83,7 +97,7 @@ const Profile = ({
         </div>
       )}
       {/* Personal info */}
-      <div className="px-4 flex flex-col">
+      <div className="px-4 pb-2 flex flex-col">
         <h3 className="mt-11 mb-5 text-2xl font-bold">{fullName}</h3>
         <div>
           <h4 className="font-semibold mb-6">Personal information</h4>

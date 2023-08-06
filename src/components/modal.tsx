@@ -1,4 +1,4 @@
-import { cloneElement, createContext, useContext, useState } from "react";
+import { cloneElement, createContext, memo, useContext, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { HiOutlineX } from "react-icons/hi";
 import useClickOutside from "src/hooks/useClickOutside.hook";
@@ -15,7 +15,7 @@ const useModalContext = () => {
     throw new Error("Using modal context outside of modal context prodvider");
   return ctx;
 };
-const Modal = ({ children }: Children) => {
+const ModalMemo = memo(function ModalMemo({ children }: Children) {
   const [openName, setOpenName] = useState("");
   const open = (modalName: string) => {
     setOpenName(modalName);
@@ -26,7 +26,7 @@ const Modal = ({ children }: Children) => {
       {children}
     </ModalContext.Provider>
   );
-};
+});
 const Button = ({
   name,
   children,
@@ -60,7 +60,7 @@ const Window = ({
       <div
         ref={ref}
         className={twMerge(
-          "w-full max-w-[400px] absolute bg-[var(--color-grey-100)] left-1/2 -translate-x-1/2 my-[5%] rounded-md ",
+          "w-full h-full md:max-w-[450px] md:h-[90%]  absolute bg-[var(--color-grey-100)] md:left-1/2 md:-translate-x-1/2 md:my-[5%] lg:rounded-md ",
           className
         )}
       >
@@ -77,6 +77,10 @@ const Window = ({
     </div>
   );
 };
-Modal.Button = Button;
-Modal.Window = Window;
+
+// Modal.displayName="Button"
+// Modal.displayName='Window'
+// Modal.Button = Button;
+// Modal.Window = Window;
+const Modal = Object.assign(ModalMemo, { Button, Window });
 export default Modal;

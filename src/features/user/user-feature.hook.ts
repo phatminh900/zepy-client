@@ -26,4 +26,13 @@ const useUpdateUserInfo = (field: string) => {
 
   return { isLoading, updateInfo };
 };
-export { useUpdateUserAvatar, useUpdateUserInfo };
+const useUpdateUserStatus = () => {
+  const { isLoading, mutate: updateInfo } = useMutation({
+    mutationFn: ({ userId, value }: { userId: string; value: string }) => {
+      return updateUser({ userId, field: "status", value });
+    },
+  });
+
+  return { isLoading, updateInfo };
+};
+export { useUpdateUserAvatar, useUpdateUserInfo, useUpdateUserStatus };

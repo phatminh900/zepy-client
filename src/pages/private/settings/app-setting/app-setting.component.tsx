@@ -11,7 +11,7 @@ const AppSettings = () => {
       <h3 className="font-semibold py-3 px-2.5 border-y border-y-[var(--color-grey-500)]">
         App settings
       </h3>
-      <div>
+      <div className="px-3">
         {/* Gender */}
         <RowLayout title="Theme">
           <form className="flex gap-5">

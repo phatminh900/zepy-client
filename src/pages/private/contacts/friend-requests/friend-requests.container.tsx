@@ -8,30 +8,21 @@ import FriendRequest from "./friend-request.component";
 const FriendRequests = () => {
   const { requestedFriend, isLoading } = useGetRequestedFriend();
 
-  if (isLoading) return <Loader />;
-  let content = (
-    <>
-      <RowHeader className="border-b border-b-[var(--color-grey-400)]">
-        <ReturnButtonTitle>
-          <div className="flex gap-1.5 items-center">
-            <span className="text-2xl">
-              <HiOutlineMailOpen />
-            </span>
-            <p>Friend Lists</p>
-          </div>
-        </ReturnButtonTitle>
-      </RowHeader>
-      <div className="pt-4 px-4">
-        {requestedFriend?.length && (
-          <p className="mb-3">Requests ({requestedFriend.length})</p>
-        )}
-        <ul className="space-y-3">
-          {requestedFriend?.map((request) => (
-            <FriendRequest request={request} key={request.id} />
-          ))}
-        </ul>
-
-        {!requestedFriend?.length && (
+  let content = <Loader />;
+  if (!isLoading)
+    content = (
+      <>
+        <RowHeader className="border-b border-b-[var(--color-grey-400)]">
+          <ReturnButtonTitle>
+            <div className="flex gap-1.5 items-center">
+              <span className="text-2xl">
+                <HiOutlineMailOpen />
+              </span>
+              <p>Friend Requests</p>
+            </div>
+          </ReturnButtonTitle>
+        </RowHeader>
+        {!requestedFriend?.length ? (
           <>
             <div>
               <div className="w-3/5 mt-[10%] mx-auto flex items-center flex-col gap-7">
@@ -42,11 +33,33 @@ const FriendRequests = () => {
               </div>
             </div>
           </>
+        ) : (
+          <div className="pt-4 px-4">
+            {requestedFriend.length > 0 && (
+              <p className="mb-3">Requests ({requestedFriend.length})</p>
+            )}
+            <ul className="space-y-3">
+              {requestedFriend?.map((request) => (
+                <FriendRequest request={request} key={request.id} />
+              ))}
+            </ul>
+
+            {!requestedFriend?.length && (
+              <>
+                <div>
+                  <div className="w-3/5 mt-[10%] mx-auto flex items-center flex-col gap-7">
+                    <img src="/imgs/no-request.png" alt="No friend requests " />
+                    <p className="text-sm text-[var(--color-grey-400)]">
+                      Your incoming request list is empty
+                    </p>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
         )}
-      </div>
-    </>
-  );
-  if (isLoading) content = <Loader />;
+      </>
+    );
   return <div className="relative">{content}</div>;
 };
 export default FriendRequests;

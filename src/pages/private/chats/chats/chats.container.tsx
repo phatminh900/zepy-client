@@ -1,6 +1,6 @@
 import ChatsHeader from "./chats-header.component";
 import { Outlet } from "react-router-dom";
-import ChatsConversations from "./chats-conversations";
+import ChatLists from "./chat-list/chats-list.component";
 
 import MainColumn from "src/ui/main-column/main-column.component";
 import useOpenTableMobile from "src/hooks/useOpenTab-mobile.hook";
@@ -11,7 +11,7 @@ const Chats = () => {
     <MainColumn>
       {/* Heaser */}
       <ChatsHeader />
-      <ChatsConversations />
+      <ChatLists />
     </MainColumn>
   );
 

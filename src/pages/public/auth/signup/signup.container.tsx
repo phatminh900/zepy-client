@@ -15,7 +15,7 @@ import { useGetUser } from "src/hooks/useAuth";
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { data: user } = useGetUser();
+  const { user } = useGetUser();
   const { signUp, isLoading } = useSignup();
   const {
     register,

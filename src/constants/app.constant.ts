@@ -1,0 +1,3 @@
+export enum APP_CONSTANT {
+  APP_CHANNEL = "APP_CHANNEL",
+}

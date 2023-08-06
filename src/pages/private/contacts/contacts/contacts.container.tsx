@@ -1,5 +1,5 @@
 import MainColumn from "src/ui/main-column/main-column.component";
-import ContactsSideBar from "./contacts-sidebar";
+import ContactsSideBar from "./contacts-sidebar.component";
 import { Outlet } from "react-router-dom";
 import useOpenTableMobile from "src/hooks/useOpenTab-mobile.hook";
 const Contacts = () => {

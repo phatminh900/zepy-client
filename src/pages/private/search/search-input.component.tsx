@@ -22,7 +22,7 @@ const SearchInput = () => {
   return (
     <form
       onSubmit={onSubmit}
-      className="flex items-center bg-[var(--color-grey-200)] p-1.5 gap-1.5 flex-1"
+      className="flex items-center bg-[var(--color-grey-200)] p-1 md:p-1.5 gap-1.5 flex-1"
     >
       <HiOutlineSearch />
       <input
@@ -32,7 +32,7 @@ const SearchInput = () => {
             validator.isEmail(val) || "Please enter a valid email",
         })}
         placeholder="Search a friend"
-        className="bg-inherit text-sm"
+        className="bg-inherit  text-xs md:text-sm w-full"
       />
     </form>
   );

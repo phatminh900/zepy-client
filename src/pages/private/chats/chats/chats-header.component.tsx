@@ -3,7 +3,7 @@ import Menu from "src/components/menu";
 import styles from "./chats-header.module.css";
 const ChatsHeader = () => {
   return (
-    <div className="pb-1.5 border-b-[var(--color-grey-200)] border-b">
+    <div className="text-xs md:text-base pb-1.5 border-b-[var(--color-grey-200)] border-b">
       {/* filter */}
       <div
         className={`${styles.filter} pl-[var(--gutter-left-component)]  pr-2 flex justify-between`}

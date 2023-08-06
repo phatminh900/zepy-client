@@ -1,6 +1,6 @@
 import { throwError } from "src/utils/error.util";
-import { AuthError } from "@supabase/supabase-js";
 import supabase, { supabaseUrl } from "./supabase";
+import { createNewConversation } from "./chats.service";
 
 export async function searchContact(email: string) {
   const { data: profile, error } = await supabase
@@ -9,7 +9,7 @@ export async function searchContact(email: string) {
     .eq("email", email);
 
   if (error) {
-    console.log(error);
+    console.error(error);
     throwError(error, error?.message);
   }
   if (!profile) return [];
@@ -30,14 +30,13 @@ export async function sendFriendRequest({
     console.error(error);
     throwError(error, error.message);
   }
-  console.log(data);
   return data;
 }
 export async function getAllFriendRequests({
   userId,
 }: {
   userId: string;
-}): Promise<{ id: string; userId: string; friendId: string }[] | null> {
+}): Promise<{ id: string; user_id: string; friend_id: string }[] | null> {
   const { data, error } = await supabase
     .from("friend_request")
     .select("*")
@@ -65,16 +64,18 @@ export async function getAllRequestedFriend({ userId }: { userId: string }) {
 export async function acceptFriend({
   userId,
   friendId,
+  roomId,
 }: {
   userId: string;
   friendId: string;
+  roomId: string;
 }) {
   const { data, error } = await supabase
     .from("user_friend")
     .insert([
       // create 2 records for 2 users
-      { user_id: userId, friend_id: friendId },
-      { user_id: friendId, friend_id: userId },
+      { user_id: userId, friend_id: friendId, room_id: roomId },
+      { user_id: friendId, friend_id: userId, room_id: roomId },
     ])
     .select();
 
@@ -84,7 +85,10 @@ export async function acceptFriend({
   }
   // after accepting a friend delete a record in friend_request
   await deleteFriendRequest({ userId });
-  return data;
+  // after accepting create 2 new conversation records for 2 users
+
+  await createNewConversation({ userId, friendId, roomId });
+  return data as { id: string; user_id: string; friend_id: string }[];
 }
 
 export async function deleteFriend({
@@ -94,14 +98,12 @@ export async function deleteFriend({
   userId: string;
   friendId: string;
 }) {
-  console.log(userId);
-  console.log(friendId);
   const { error: error1 } = await supabase
     .from("user_friend")
     .delete()
     .eq("user_id", userId)
     .eq("friend_id", friendId);
-  // delelte 2 recored
+  // delete 2 records
   const { error: error2 } = await supabase
     .from("user_friend")
     .delete()
@@ -115,6 +117,7 @@ export async function deleteFriend({
     console.error(error2);
     throwError(error2, error2.message);
   }
+  // TODO: after deleting friend delete conversation records
 }
 export async function deleteFriendRequest({ userId }: { userId: string }) {
   const { data, error } = await supabase
@@ -125,7 +128,6 @@ export async function deleteFriendRequest({ userId }: { userId: string }) {
     console.error(error);
     throwError(error, error.message);
   }
-  console.log(data);
   return data;
 }
 
@@ -133,16 +135,16 @@ export async function deleteFriendRequest({ userId }: { userId: string }) {
 export async function getAllFriend({ userId }: { userId: string }) {
   const { data: friends, error } = await supabase
     .from("user_friend")
-    .select("id,friend_profile(*)")
+    .select("id,room_id,friend_profile(*)")
     .eq("user_id", userId);
   if (error) {
     console.error(error);
     throwError(error, error.message);
   }
-  console.log(friends);
   return friends as
     | {
         id: string;
+        room_id: string;
         friend_profile: User;
       }[]
     | null;
