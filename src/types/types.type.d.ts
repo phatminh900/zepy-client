@@ -13,10 +13,7 @@ interface ISignup extends ICredential {
 
 interface User {
   fullname: string;
-  user_metadata: {
-    avatar: string;
-    fullname: string;
-  };
+
   avatar: string;
   gender: string;
   email: string;
@@ -30,6 +27,14 @@ interface IRequestedFriend {
   user_profile: User;
 }
 
+interface IUserProfile {
+  status: string;
+  avatar: string;
+  id: string;
+  fullname: string;
+  email: string;
+  gender: string;
+}
 interface IMessage {
   id: string;
   author_id: string;
@@ -39,12 +44,7 @@ interface IMessage {
   room_id: string;
   message: string;
   isRead: boolean;
-  author_profile?: {
-    avatar: string;
-    email: string;
-    gender: string;
-    fullname: string;
-  };
+  author_profile?: IUserProfile;
 }
 
 interface IFriendProfile {
@@ -57,21 +57,40 @@ interface IFriendProfile {
 }
 
 interface IConversation {
-  created_at: string;
   friend_id: string;
   id: string;
   isChatted: boolean;
+
   lastMessage: string;
   lastMessageAt: string;
   isRead: boolean;
+  created_at: string;
+  type: "normal";
   room_id: string;
   unReadMessageCount: number;
   user_id: string;
-  friend_profile: {
-    status: string;
-    avatar: string;
-    id: string;
-    fullname: string;
-  };
-  last_send_profile: { avatar: string; id: string; fullname: string };
+  friend_profile: IUserProfile;
+  last_send_profile: IUserProfile;
+}
+interface IGroupConversation
+  extends Omit<IConversation, "friend_id" | "friend_profile" | "room_id"> {
+  group_id: string;
+  type: "group";
+  room_id: string;
+  group: { name: string; id: string; avatar: string; room_id: string };
+
+  created_at: string;
+}
+interface IFriend {
+  id: string;
+  room_id: string;
+  friend_profile: User;
+}
+
+interface IGroup {
+  id: string;
+  main_author_id: string;
+  vice_author_id?: string;
+  room_id: string;
+  avatar: string;
 }

@@ -1,9 +1,9 @@
 import supabase, { supabaseUrl } from "./supabase";
 import { AuthError } from "@supabase/supabase-js";
 import { throwError } from "src/utils/error.util";
+import { updateImg } from "src/utils/update-img.util";
 
 export async function searchFriend(email: string) {
-  console.log(email);
   const { data: profile, error } = await supabase
     .from("profile")
     .select("*")
@@ -36,20 +36,10 @@ export async function updateUser({
 }
 export const updateUserAvatar = async (userId: string, avatar: any) => {
   try {
-    const avatarName = `avatar-${new Date().toISOString()}-${userId}-${
-      avatar.name
-    }`;
-    const avatarPath = `${supabaseUrl}/storage/v1/object/public/avatars/${avatarName}`;
-    const { error } = await supabase.storage
-      .from("avatars")
-      .upload(avatarName, avatar);
-    if (error) {
-      console.log(error);
-      throw new Error("There were some problems try again later.");
-    }
+    const avatarPath = await updateImg(userId, "avatars", avatar);
     await updateUser({
       userId,
-      field: "avatar",
+      field: "avatars",
       value: avatarPath,
     });
   } catch (error) {

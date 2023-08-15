@@ -13,4 +13,6 @@ export enum ROUTES {
   PROFILE = "/profile",
   SETTINGS = "/settings",
   SEARCH = "/search",
+  GROUP = "/GROUP",
+  CHAT_GROUP = "/chats/group",
 }

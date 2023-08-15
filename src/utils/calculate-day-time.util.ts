@@ -2,6 +2,7 @@ import {
   differenceInHours,
   differenceInDays,
   differenceInMinutes,
+  differenceInSeconds,
 } from "date-fns";
 
 export const requestedTimeHours = (date: string | Date) => {
@@ -12,4 +13,7 @@ export const requestedTimeMinutes = (date: string | Date) => {
 };
 export const requestedDays = (date: string | Date) => {
   return differenceInDays(Date.now(), new Date(date));
+};
+export const requestedSeconds = (date: string | Date) => {
+  return differenceInSeconds(Date.now(), new Date(date));
 };

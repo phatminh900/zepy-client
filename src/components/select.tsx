@@ -20,6 +20,7 @@ interface ISelect {
   icon: React.ReactNode;
   className?: string;
   defaultValue: Value;
+  onChange?: (value: string) => void;
 }
 
 const useSelectContext = () => {
@@ -28,11 +29,20 @@ const useSelectContext = () => {
   return ctx;
 };
 
-const Select = ({ children, icon, defaultValue, className }: ISelect) => {
+const Select = ({
+  children,
+  icon,
+  defaultValue,
+  className,
+  onChange,
+}: ISelect) => {
   const [isOpen, setIsOpen] = useState(false);
   const [value, setValue] = useState(defaultValue);
-  const changeValue = (value: { value: string; label: string }) =>
+  const changeValue = (value: { value: string; label: string }) => {
     setValue(value);
+    onChange?.(value.value);
+  };
+
   const open = (e: React.MouseEvent) => {
     e.stopPropagation();
     setIsOpen(true);
@@ -51,7 +61,7 @@ const Select = ({ children, icon, defaultValue, className }: ISelect) => {
       >
         <div
           onClick={open}
-          className={`cursor-pointer p-2 items-center flex gap-1 ${
+          className={`text-sm lg:text-base cursor-pointer p-2 items-center flex gap-1 ${
             isOpen
               ? "bg-[var(--color-primary-light)] text-[var(--color-primary-dark)]"
               : "bg-[var(--color-grey-300)]"

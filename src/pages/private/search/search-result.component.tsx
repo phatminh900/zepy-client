@@ -47,30 +47,33 @@ const SearchResult = () => {
           )}
         </ul>
         <Modal.Window name="contact-modal">
-          {friend && !isYourSelf && (
-            <Profile
-              isMutating={isSendingFriendRequest}
-              fullName={friend.fullname}
-              isSentRequest={isSentRequest}
-              isFriend={isAlreadyFriend}
-              onCancelRequest={handleCancelRequest}
-              onOpenChatConversation={handleOpenChat}
-              onAddFriendRequest={() =>
-                sendFriendRequest({ userId: user!.id, friendId: friend.id })
-              }
-              {...friend}
-              isUser={false}
-            />
-          )}
-          {friend && isYourSelf && (
-            <Profile
-              isUser={true}
-              avatar={friend.avatar}
-              email={friend.email}
-              fullName={friend.fullname}
-              gender={friend.gender}
-            />
-          )}
+          <>
+            {friend && !isYourSelf && (
+              <Profile
+                isMutating={isSendingFriendRequest}
+                fullName={friend!.fullname}
+                isSentRequest={isSentRequest}
+                isFriend={isAlreadyFriend}
+                onCancelRequest={handleCancelRequest}
+                onOpenChatConversation={handleOpenChat}
+                onAddFriendRequest={() =>
+                  sendFriendRequest({ userId: user!.id, friendId: friend!.id })
+                }
+                {...friend}
+                isUser={false}
+              />
+            )}
+
+            {friend && isYourSelf ? (
+              <Profile
+                isUser={true}
+                avatar={friend.avatar}
+                email={friend.email}
+                fullName={friend.fullname}
+                gender={friend.gender}
+              />
+            ) : null}
+          </>
         </Modal.Window>
       </div>
     </Modal>

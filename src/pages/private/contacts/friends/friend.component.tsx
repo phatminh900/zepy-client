@@ -28,7 +28,6 @@ const Friend = ({
     // Open
     chatPath += `?${PARAMS.isOpenTab}=1`;
   }
-
   return (
     <li className=" px-2 py-2.5 ">
       <Link

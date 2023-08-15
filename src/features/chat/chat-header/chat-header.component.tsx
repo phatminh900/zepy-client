@@ -10,22 +10,23 @@ import styles from "./chat-header.module.css";
 import ReturnButtonTitle from "src/components/return-button-title";
 import useOpenTableMobile from "src/hooks/useOpenTab-mobile.hook";
 import OnlineStatus from "src/components/online-status.component";
-import DateCalculator from "src/components/date-calculator.component";
 
 const ChatHeader = ({
   fullName,
   avatar,
   onlineStatus,
+  render,
 }: {
-  onlineStatus: string | "Online";
+  onlineStatus?: string | "Online";
   fullName: string;
   avatar: string;
+  render: () => JSX.Element;
 }) => {
   const { isMoBile } = useOpenTableMobile();
   const AvatarStatus = (
     <div className="relative">
       <Avatar size="large" src={avatar} />
-      {onlineStatus === "Online" && <OnlineStatus />}
+      {onlineStatus && onlineStatus === "Online" && <OnlineStatus />}
     </div>
   );
   return (
@@ -37,17 +38,13 @@ const ChatHeader = ({
       )}
       <div className="flex-1">
         <div className="flex justify-between items-center h-full">
-          <div>
+          <div className="flex flex-col justify-between">
             <h4
               className={`${styles.userName} text-sm    md:text-lg text-[var(--color-grey-800)]`}
             >
               {fullName}
             </h4>
-            {onlineStatus !== "Online" ? (
-              <DateCalculator time={onlineStatus} />
-            ) : (
-              <p className={`${styles.status} text-xs`}>Just now</p>
-            )}
+            {render()}
           </div>
           {/* actions */}
           <div className="text-xl flex">

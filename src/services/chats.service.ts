@@ -1,14 +1,18 @@
+import { updateImg } from "src/utils/update-img.util";
 import supabase from "./supabase";
 import { throwError } from "src/utils/error.util";
 export async function getConversations({ userId }: { userId: string }) {
-  const { data, error } = await supabase
+  let query = supabase
     .from("conversation")
     .select(
-      "*,friend_profile(avatar,id,fullname),last_send_profile(id,fullname)"
-    )
+      "*,created_at,friend_profile(avatar,id,fullname),last_send_profile(id,fullname)"
+    );
+
+  query = query
     .eq("user_id", userId)
     .eq("isChatted", true)
     .order("lastMessageAt", { ascending: false });
+  const { data, error } = await query;
   if (error) {
     console.error(error);
     throwError(error, error.message);
@@ -38,17 +42,32 @@ export async function createNewConversation({
   userId,
   friendId,
   roomId,
+  lastMessage,
+  lastMessageAt,
+  lastSendId,
 }: {
   userId: string;
   roomId: string;
   friendId: string;
+  lastSendId: string;
+  lastMessageAt: string;
+  lastMessage: string;
 }) {
   const { data, error } = await supabase
     .from("conversation")
     .insert([
-      // create 2 records for different user
-      { user_id: userId, friend_id: friendId, isRead: false, room_id: roomId },
-      { user_id: friendId, friend_id: userId, isRead: false, room_id: roomId },
+      {
+        user_id: userId,
+        friend_id: friendId,
+        last_sent_id: lastSendId,
+        lastMessageAt: lastMessageAt,
+        isChatted: true,
+        lastMessage,
+        unReadMessageCount: 1,
+        room_id: roomId,
+        isRead: false,
+        type: "normal",
+      },
     ])
     .select();
   if (error) {
@@ -81,11 +100,13 @@ export async function updateConversation({
   roomId,
   field,
   value,
+  conversationType = "normal",
 }: {
   field: string | string[];
   value: string | boolean | number | (string | boolean | number)[];
   userId: string;
   roomId: string;
+  conversationType: "group" | "normal";
 }) {
   const updated: { [key: string]: boolean | string | number } = {};
   if (Array.isArray(field) && Array.isArray(value)) {
@@ -96,30 +117,45 @@ export async function updateConversation({
   if (typeof field === "string" && !Array.isArray(value)) {
     updated[field] = value;
   }
-  const { data, error } = await supabase
-    .from("conversation")
-    .update(updated)
-    .eq("user_id", userId)
-    .eq("room_id", roomId)
-    .select()
-    .single();
+  if (conversationType === "normal") {
+    const { data, error } = await supabase
+      .from("conversation")
+      .update(updated)
+      .eq("user_id", userId)
+      .eq("room_id", roomId)
+      .select()
+      .single();
 
-  if (error) {
-    console.error(error);
-    throwError(error, error.message);
+    if (error) {
+      console.error(error);
+      throwError(error, error.message);
+    }
+    return data as IConversation;
   }
-  return data as IConversation;
+  if (conversationType === "group") {
+    const { data, error } = await supabase
+      .from("group_conversation")
+      .update(updated)
+      .eq("user_id", userId)
+      .eq("room_id", roomId)
+      .select()
+      .single();
+
+    if (error) {
+      console.error(error);
+      throwError(error, error.message);
+    }
+    return data as IConversation;
+  }
 }
 export async function createNewMessage({
   authorId,
   userId,
-  friendId,
   message,
   emoji,
   roomId,
 }: {
   authorId: string;
-  friendId: string;
   userId: string;
   message: string;
   emoji: string[];
@@ -128,7 +164,6 @@ export async function createNewMessage({
   const { data, error } = await supabase
     .from("message")
     .insert([
-      // 2 rows for 2 user
       {
         user_id: userId,
         author_id: authorId,
@@ -136,21 +171,60 @@ export async function createNewMessage({
         emojis: emoji,
         room_id: roomId,
       },
-      {
-        user_id: friendId,
-        author_id: authorId,
-        message,
-        emojis: emoji,
-        room_id: roomId,
-      },
     ])
-    .select();
+    .select(
+      "id,author_id,created_at,emojis,isRead,message,room_id,user_id,author_profile(avatar,id,fullname,email,gender)"
+    );
   if (error) {
     console.error(error);
     throwError(error, error.message);
   }
   // after create a new Message set isChatted in conversation is true and is read to false
-
+  if (!data) return null;
+  return data[0] as {
+    id: string;
+    author_id: string;
+    created_at: string;
+    emojis: string[];
+    isRead: boolean;
+    message: string;
+    room_id: string;
+    user_id: string;
+  };
+}
+export async function createImgMessage({
+  authorId,
+  userId,
+  img,
+  emoji,
+  roomId,
+}: {
+  authorId: string;
+  userId: string;
+  img: File;
+  emoji: string[];
+  roomId: string;
+}) {
+  const avatarPath = await updateImg(userId, "message_img", img);
+  const { data, error } = await supabase
+    .from("message")
+    .insert([
+      // 2 rows for 2 user
+      {
+        user_id: userId,
+        author_id: authorId,
+        message: avatarPath,
+        emojis: emoji,
+        room_id: roomId,
+      },
+    ])
+    .select()
+    .single();
+  if (error) {
+    console.error(error);
+    throwError(error, error.message);
+  }
+  // after create a new Message set isChatted in conversation is true and is read to false
   return data as {
     id: string;
     author_id: string;
@@ -160,7 +234,7 @@ export async function createNewMessage({
     message: string;
     room_id: string;
     user_id: string;
-  }[];
+  };
 }
 export async function getAllMessages({
   roomId,
@@ -169,20 +243,20 @@ export async function getAllMessages({
   roomId: string;
   userId: string;
 }) {
-  console.log("new request is sent");
   const { data, error } = await supabase
     .from("message")
     .select("*,author_profile(avatar,id,fullname,email,gender)")
     .eq("room_id", roomId)
-    .eq("user_id", userId);
+    .eq("user_id", userId)
+    .order("created_at", { ascending: true });
   if (error) {
     console.error(error);
     throwError(error, error.message);
   }
   return data as IMessage[];
 }
+
 export async function deleteMessage({ messageId }: { messageId: string }) {
-  console.log(messageId);
   const { data, error } = await supabase
     .from("message")
     .delete()
@@ -210,11 +284,11 @@ export async function deleteAllMessages({
     throwError(error, error.message);
   }
   // after delete all message set is chatted to false =>>>>
-  await updateConversation({
-    userId,
-    roomId,
-    field: "isChatted",
-    value: false,
-  });
+  // await updateConversation({
+  //   userId,
+  //   roomId,
+  //   field: "isChatted",
+  //   value: false,
+  // });
   return data;
 }

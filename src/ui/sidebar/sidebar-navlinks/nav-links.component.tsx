@@ -58,7 +58,10 @@ const NavLinks = () => {
           title={!isDarkMode ? "Change to dark Mode" : "Change to light mode"}
           className="text-3xl mb-3 text-[var(--color-grey-0)] cursor-pointer w-full flex items-center justify-center "
         >
-          <button onClick={toggleDarkMode}>
+          <button
+            className="flex justify-center w-full h-full"
+            onClick={toggleDarkMode}
+          >
             {isDarkMode ? <HiOutlineSun /> : <HiOutlineMoon />}
           </button>
         </li>

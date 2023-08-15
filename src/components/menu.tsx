@@ -106,7 +106,7 @@ const List = (props: IListProps) => {
         right: listPosition.right + "px",
       }}
       className={`${twMerge(
-        "fixed  z-50  shadow-2xl bg-[var(--color-grey-100)] divide-y-2 [&>li]:py-2 [&>li]:px-4 text-sm divide-[var(--color-grey-300)]",
+        "fixed   z-50  shadow-2xl bg-[var(--color-grey-100)] divide-y-2 [&>li]:py-2 [&>li]:px-4 text-sm divide-[var(--color-grey-300)]",
         className
       )}`}
     >
@@ -127,7 +127,9 @@ const Option = ({
   children: React.ReactNode;
 }) => {
   const { close } = useMenuContext();
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     close();
     onClick();
   };

@@ -1,10 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { RealtimeChannel } from "@supabase/realtime-js";
 
 interface IChatStore {
   messages: IMessage[];
+  channel: RealtimeChannel | null;
+  currentRoom: string;
 }
 const initialState: IChatStore = {
   messages: [],
+  channel: null,
+  currentRoom: "",
 };
 const chatSlice = createSlice({
   initialState,
@@ -24,7 +29,20 @@ const chatSlice = createSlice({
         (message) => message.id !== action.payload
       );
     },
+    setChannel(state, action: PayloadAction<RealtimeChannel>) {
+      state.channel = action.payload;
+    },
+    setCurrentRoom(state, action: PayloadAction<string>) {
+      state.currentRoom = action.payload;
+    },
   },
 });
-export const { addMessage, deleteMessage, addMessages } = chatSlice.actions;
+export const {
+  getMessages,
+  addMessage,
+  deleteMessage,
+  addMessages,
+  setChannel,
+  setCurrentRoom,
+} = chatSlice.actions;
 export default chatSlice.reducer;

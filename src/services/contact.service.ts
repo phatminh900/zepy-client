@@ -1,6 +1,5 @@
 import { throwError } from "src/utils/error.util";
-import supabase, { supabaseUrl } from "./supabase";
-import { createNewConversation } from "./chats.service";
+import supabase from "./supabase";
 
 export async function searchContact(email: string) {
   const { data: profile, error } = await supabase
@@ -83,12 +82,13 @@ export async function acceptFriend({
     console.error(error);
     throwError(error, error.message);
   }
-  // after accepting a friend delete a record in friend_request
-  await deleteFriendRequest({ userId });
-  // after accepting create 2 new conversation records for 2 users
 
-  await createNewConversation({ userId, friendId, roomId });
-  return data as { id: string; user_id: string; friend_id: string }[];
+  return data as {
+    id: string;
+    user_id: string;
+    friend_id: string;
+    room_id: string;
+  }[];
 }
 
 export async function deleteFriend({
@@ -117,7 +117,6 @@ export async function deleteFriend({
     console.error(error2);
     throwError(error2, error2.message);
   }
-  // TODO: after deleting friend delete conversation records
 }
 export async function deleteFriendRequest({ userId }: { userId: string }) {
   const { data, error } = await supabase
@@ -132,7 +131,7 @@ export async function deleteFriendRequest({ userId }: { userId: string }) {
 }
 
 //
-export async function getAllFriend({ userId }: { userId: string }) {
+export async function getAllFriends({ userId }: { userId: string }) {
   const { data: friends, error } = await supabase
     .from("user_friend")
     .select("id,room_id,friend_profile(*)")
@@ -141,11 +140,5 @@ export async function getAllFriend({ userId }: { userId: string }) {
     console.error(error);
     throwError(error, error.message);
   }
-  return friends as
-    | {
-        id: string;
-        room_id: string;
-        friend_profile: User;
-      }[]
-    | null;
+  return friends as IFriend[] | null;
 }

@@ -35,7 +35,7 @@ const Greeting = () => {
       </h3>
       <Slider
         data={sliders}
-        render={(slide) => <Slide key={slide.imgSrc} {...slide} />}
+        render={(slide) => <Slide key={slide.imgSrc} {...slide}></Slide>}
       >
         {/* Clone element override existing props */}
         <SliderActions

@@ -1,66 +1,157 @@
-import { useEffect, useCallback, useState, useMemo } from "react";
-import { useForm } from "react-hook-form";
+import { useQueryClient } from "@tanstack/react-query";
+import { useEffect, useCallback, useState } from "react";
+import { useParams } from "react-router-dom";
+import { QueryKey } from "src/constants/query-key.constant";
 
 import {
+  updateUsersConversation,
   useGetConversation,
+  useSendImgMessage,
   useSendMessage,
   useSetIsReadConversation,
 } from "src/features/chat/chat.hook";
-import { addMessage, addMessages } from "src/features/chat/chat.slice";
+import { addMessage, getMessages } from "src/features/chat/chat.slice";
 import { useGetUser } from "src/hooks/useAuth";
-import { useAppDispatch } from "src/hooks/useSelectorDispatch.hook";
+import {
+  useAppDispatch,
+  useAppSelector,
+} from "src/hooks/useSelectorDispatch.hook";
 
 const useChatHook = () => {
   const { user: userData } = useGetUser();
-  const dispatch = useAppDispatch();
-
   const user = userData!;
   const { conversation, isGettingConversation } = useGetConversation();
-  const { setIsRead } = useSetIsReadConversation();
+  const channel = useAppSelector((store) => store.chat.channel);
+  const query = useQueryClient();
+  const dispatch = useAppDispatch();
+  const { id: roomId } = useParams();
+  const { setIsRead } = useSetIsReadConversation(roomId!, "normal");
   const [message, setMessage] = useState("");
-  const { register, watch } = useForm();
   const { isSendingMessage, sendMessage } = useSendMessage();
-  const handleSetMessage = (message: string) => setMessage(message);
+  const { sendImg } = useSendImgMessage();
+  const handleSetMessage = (message: string) => {
+    setMessage(message);
+  };
   const handleSelectEmoji = useCallback(
     (emoji: string) => setMessage((prev) => prev + emoji),
     []
   );
-  const handleSelectImg = () => {};
+  const handleSelectImg = (file: File) => {
+    const userMessage = {
+      authorId: user!.id,
+      img: file,
+      emoji: [],
+      roomId: conversation!.room_id,
+      userId: user!.id,
+    };
+    const friendMessage = {
+      authorId: user!.id,
+      img: file,
+      emoji: [],
+      roomId: conversation!.room_id,
+      userId: conversation!.friend_id,
+    };
+    sendImg(userMessage).then(async (data) => {
+      await updateUsersConversation(data!, true, "normal");
+      query.invalidateQueries({
+        queryKey: [QueryKey.GET_CONVERSATIONS],
+      });
+    });
+    sendImg(friendMessage).then(async (data) => {
+      if (channel) {
+        channel?.send({
+          type: "broadcast",
+          event: "receive-message",
+          payload: {
+            ...data,
+          },
+        });
+      }
+      await updateUsersConversation(data!, false, "normal");
+      query.invalidateQueries({
+        queryKey: [QueryKey.GET_CONVERSATIONS],
+      });
+    });
+  };
   const handleSubmitMessage = (e: React.FormEvent) => {
     e.preventDefault();
-    const newMessage = {
+    if (!message.trim()) return;
+    const newMessageUser = {
       authorId: user.id,
       message,
       emoji: ["string"],
-      friendId: conversation!.friend_id,
       roomId: conversation!.room_id,
       userId: user.id,
     };
-    // dispatch(addMessage(newMessage));
-    sendMessage(newMessage, {
-      onSuccess: (data) => {
-        dispatch(addMessages(data));
-      },
+    const newMessageFriend = {
+      authorId: user.id,
+      message,
+      emoji: ["string"],
+      roomId: conversation!.room_id,
+      userId: conversation!.friend_id,
+    };
+    sendMessage(newMessageUser).then(async (data) => {
+      if (data!.user_id === user!.id) dispatch(addMessage(data!));
+
+      await updateUsersConversation(data!, true, "normal");
+      query.invalidateQueries({
+        queryKey: [QueryKey.GET_CONVERSATIONS],
+      });
     });
+    // create a new message for friend broadcast to him/her
+    sendMessage(newMessageFriend).then(async (data) => {
+      if (data!.user_id === user!.id) dispatch(addMessage(data!));
+
+      if (channel) {
+        channel?.send({
+          type: "broadcast",
+          event: "receive-message",
+          payload: {
+            ...data,
+          },
+        });
+      }
+      await updateUsersConversation(data!, false, "normal");
+      query.invalidateQueries({
+        queryKey: [QueryKey.GET_CONVERSATIONS],
+      });
+    });
+
     setMessage("");
   };
   const fiendOnlineStatus = conversation?.friend_profile.status;
 
   useEffect(() => {
-    if (conversation) {
+    if (conversation?.unReadMessageCount) {
       setIsRead();
     }
-  }, [conversation, setIsRead]);
+  }, [conversation?.unReadMessageCount, setIsRead]);
+  // change conversation delete this old one
+  useEffect(() => {
+    if (conversation?.room_id) {
+      // refetch when focus to set conversation state to read
+      dispatch(getMessages([]));
+    }
+    // go to other chat ==>
+  }, [conversation?.room_id, dispatch]);
+  // subcribe new channel
 
+  useEffect(() => {
+    if (conversation?.friend_profile.fullname) {
+      document.title = `Chatting with ${conversation.friend_profile.fullname}`;
+    }
+    return () => {
+      document.title = "Zepy";
+    };
+  }, [conversation?.friend_profile.fullname]);
   return {
     handleSubmitMessage,
     handleSelectEmoji,
     handleSetMessage,
+    handleSelectImg,
     sendMessage,
     conversation,
     message,
-
-    register,
     fiendOnlineStatus,
     isGettingConversation,
     isSendingMessage,

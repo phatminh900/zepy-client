@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { PARAMS } from "src/constants/seachParams.constant";
 import {
   useFriendRequest,
-  useGetAllFriend,
+  useGetAllFriends,
   useGetFriendRequests,
 } from "src/features/contact/contact.hook";
 import { useGetUser } from "src/hooks/useAuth";
@@ -14,7 +14,7 @@ const useSearchResult = () => {
   const { user } = useGetUser();
   const navigate = useNavigate();
   const { rejectFriend } = useFriendRequest();
-  const { friends } = useGetAllFriend(user!.id);
+  const { friends } = useGetAllFriends(user!.id);
   const { friendRequests } = useGetFriendRequests();
   const [searchParams] = useSearchParams();
   const email = searchParams.get(PARAMS.email) || "";

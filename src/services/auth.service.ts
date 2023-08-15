@@ -19,7 +19,6 @@ export const signUp = async ({
       },
     },
   });
-  console.log(data);
   if (error) {
     throwError(error, error?.message);
   }
@@ -39,7 +38,6 @@ export const login = async ({
   if (error) {
     throwError(error, error?.message);
   }
-  console.log(data);
   return data;
 };
 export const logOut = async () => {

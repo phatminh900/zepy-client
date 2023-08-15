@@ -17,6 +17,8 @@ const ProtectRoute = ({ children }: Children) => {
     const appChannel = supabase.channel(APP_CONSTANT.APP_CHANNEL);
     appChannel
       .on("presence", { event: "sync" }, () => {
+        updateInfo({ userId: user.id, value: "Online" });
+
         appChannel.presenceState();
       })
       .on("presence", { event: "join" }, () => {
@@ -34,6 +36,14 @@ const ProtectRoute = ({ children }: Children) => {
         }
       });
   }, [user, updateInfo]);
+
+  useEffect(() => {
+    const handleSetUserState = () => {
+      updateInfo({ userId: user!.id, value: new Date().toISOString() });
+    };
+    window.addEventListener("beforeunload", handleSetUserState);
+    return () => window.removeEventListener("beforeunload", handleSetUserState);
+  }, []);
   if (isLoading) return <Loader />;
   if (!user && !isLoading) return <Navigate to={ROUTES.LOGIN} />;
   return children;

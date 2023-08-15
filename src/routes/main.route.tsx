@@ -5,7 +5,6 @@ import {
   AuthContainer,
   Chat,
   Chats,
-  Dashboard,
   Contacts,
   Greeting,
   Login,
@@ -15,6 +14,7 @@ import {
   Groups,
   Settings,
   Search,
+  GroupChat,
 } from "../pages";
 import Loader from "src/ui/Loader";
 import AppLayout from "src/ui/app-layout";
@@ -46,8 +46,10 @@ const Main = () => {
             <Route path={ROUTES.CHATS} element={<Chats />}>
               <Route index element={<Greeting />} />
               <Route path={":id"} element={<Chat />} />
+              <Route path={"group/:id"} element={<GroupChat />} />
             </Route>
             {/* Contacts */}
+            {/* <Route path={`${ROUTES.CHAT_GROUP}/:id`} element={<GroupChat />} /> */}
             <Route path={ROUTES.CONTACTS} element={<Contacts />}>
               <Route index element={<Navigate to={ROUTES.FRIENDS} />} />
               <Route path={ROUTES.FRIENDS} element={<Friends />} />

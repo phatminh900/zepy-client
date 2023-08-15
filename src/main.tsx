@@ -8,7 +8,13 @@ import store from "./store/store";
 import ThemeContextProvider from "./contexts/theme.context";
 import "./index.css";
 import ToasterComponent from "./components/toaster";
-const query = new QueryClient();
+const query = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+    },
+  },
+});
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

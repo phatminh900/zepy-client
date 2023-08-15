@@ -11,11 +11,11 @@ const Avatar = ({ size, src }: IAvatar) => {
   };
   return (
     <div
-      className={`rounded-full  ${imgSize[size]} overflow-hidden ring-1  ring-grey-50`}
+      className={`rounded-full flex  ${imgSize[size]} overflow-hidden ring-1  ring-grey-50`}
     >
       <img
         src={src || "/imgs/default-user.jpg"}
-        className="object-cover bg-center"
+        className="object-cover bg-center w-full"
         alt="User Img"
       />
     </div>

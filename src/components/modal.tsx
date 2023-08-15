@@ -1,4 +1,11 @@
-import { cloneElement, createContext, memo, useContext, useState } from "react";
+import {
+  ButtonHTMLAttributes,
+  cloneElement,
+  createContext,
+  memo,
+  useContext,
+  useState,
+} from "react";
 import { twMerge } from "tailwind-merge";
 import { HiOutlineX } from "react-icons/hi";
 import useClickOutside from "src/hooks/useClickOutside.hook";
@@ -27,17 +34,18 @@ const ModalMemo = memo(function ModalMemo({ children }: Children) {
     </ModalContext.Provider>
   );
 });
-const Button = ({
-  name,
-  children,
-}: {
+interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
   name: string;
   children: React.ReactNode;
-}) => {
+}
+const Button = ({ name, children, onClick }: IButton) => {
   const { open, close, openName } = useModalContext();
   return cloneElement(children! as React.ReactElement<any>, {
     onClick: () => {
       openName ? close() : open(name);
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      onClick?.();
     },
   });
 };
@@ -59,8 +67,9 @@ const Window = ({
       {/* Modal */}
       <div
         ref={ref}
+        style={{ top: "50%", translate: "0 -50%" }}
         className={twMerge(
-          "w-full h-full md:max-w-[450px] md:h-[90%]  absolute bg-[var(--color-grey-100)] md:left-1/2 md:-translate-x-1/2 md:my-[5%] lg:rounded-md ",
+          "w-4/5 left-1/2  -translate-x-1/2  md:w-full h-full md:max-w-[450px] md:h-[90%]  absolute bg-[var(--color-grey-100)] md:left-1/2 md:-translate-x-1/2  lg:rounded-md ",
           className
         )}
       >
@@ -72,7 +81,11 @@ const Window = ({
             <HiOutlineX />
           </button>
         </div>
-        <div>{children}</div>
+        <div>
+          {cloneElement(children! as React.ReactElement<any>, {
+            onClose: close,
+          })}
+        </div>
       </div>
     </div>
   );

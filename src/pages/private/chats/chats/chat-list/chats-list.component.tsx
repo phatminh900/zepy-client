@@ -1,12 +1,15 @@
 import Menu from "src/components/menu";
-import Conversation from "../chats-conversation.component";
+import Conversation from "../chats-conversation/chats-conversation.component";
 import Loader from "src/ui/Loader";
 import useChatListHook from "./chats-list.hook";
 
 const ChatLists = () => {
-  const { isGettingConversations, conversations } = useChatListHook();
+  const { isGettingConversations, filteredConversation } = useChatListHook();
   if (isGettingConversations) return <Loader />;
-  if ((!conversations?.length || !conversations) && !isGettingConversations)
+  if (
+    (!filteredConversation?.length || !filteredConversation) &&
+    !isGettingConversations
+  )
     return (
       <p className="p-[var(--gutter-left-component)] text-center">
         Start a new conversation with your friends
@@ -14,13 +17,15 @@ const ChatLists = () => {
     );
   return (
     <ul>
+      {/* TODO: */}
       <Menu>
-        {conversations?.map((conversation) => (
+        {filteredConversation?.map((conversation) => (
           <Conversation
             unReadMessage={conversation.unReadMessageCount}
             key={conversation.id}
             isRead={conversation.isRead}
             roomId={conversation.room_id}
+            type={conversation.type}
             avatar={conversation.friend_profile.avatar}
             fullName={conversation.friend_profile.fullname}
             authorId={conversation.last_send_profile.id}

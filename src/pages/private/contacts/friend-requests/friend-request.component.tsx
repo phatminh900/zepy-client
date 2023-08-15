@@ -1,4 +1,5 @@
 import AvatarTitle from "src/components/avatar-title";
+import { v4 as uuidv4 } from "uuid";
 import Button from "src/components/button";
 import DateCalculator from "src/components/date-calculator.component";
 import { useFriendRequest } from "src/features/contact/contact.hook";
@@ -30,7 +31,7 @@ const FriendRequest = ({ request }: { request: IRequestedFriend }) => {
         <Button
           disabled={isAcceptingFriend}
           onClick={() => {
-            const roomId = crypto.randomUUID();
+            const roomId = uuidv4();
             acceptFriend({
               userId: request.user_profile.id,
               friendId: request.friend_id,
