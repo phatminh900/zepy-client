@@ -1,0 +1,17 @@
+{
+  "profile": "Profile",
+  "setting": "Setting",
+  "yourName": "Your Name",
+  "gender": "Gender",
+  "update": "Update",
+  "updating": "Updating",
+  "male": "Male",
+  "female": "Female",
+  "appSettings": "App settings",
+  "theme": "Themes",
+  "darkMode": "Dark Mode",
+  "lightMode": "Light Mode",
+  "languages": "Languages",
+  "logout": "Logout",
+  "loggingOut": "Logging out"
+}

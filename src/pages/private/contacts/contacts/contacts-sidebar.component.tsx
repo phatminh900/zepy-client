@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
 import styles from "./contacts-sidebar.module.css";
 import { FiUsers } from "react-icons/fi";
@@ -5,22 +6,23 @@ import { HiOutlineMailOpen, HiOutlineUserGroup } from "react-icons/hi";
 import ContactSideBarItem from "./contact-sidebar-item.component";
 import { useGetRequestedFriend } from "src/features/contact/contact.hook";
 const ContactsSideBar = () => {
+  const { t } = useTranslation("contact");
   const { pathname } = useLocation();
   const { requestedFriend } = useGetRequestedFriend();
   const links = [
     {
       path: "all-friends",
-      label: "All Friends",
+      label: t("allFriend"),
       icon: <FiUsers />,
     },
     {
       path: "groups",
-      label: "Joined Groups",
+      label: t("joinedGroup"),
       icon: <HiOutlineUserGroup />,
     },
     {
       path: "friends-request",
-      label: "Friends Request",
+      label: t("friendRequests"),
       icon: <HiOutlineMailOpen />,
     },
   ];

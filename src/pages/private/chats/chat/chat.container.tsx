@@ -7,6 +7,10 @@ import useChatHook from "./chat.hook";
 import Loader from "src/ui/Loader";
 import DateCalculator from "src/components/date-calculator.component";
 import styles from "./chat.module.css";
+import {
+  ChatLayout,
+  ChatLayoutContent,
+} from "src/components/chat-layout.component";
 const Chat = () => {
   const {
     handleSubmitMessage,
@@ -30,11 +34,12 @@ const Chat = () => {
 
   if (!conversation) return null;
   return (
-    <div className="grid h-[100dvh] grid-rows-[65px_1fr_40px] md:grid-rows-[72px_1fr_60px] overflow-hidden [&>*]:px-2 md:[&>*]:px-5">
+    <ChatLayout>
       {/* Header */}
       <ChatHeader
         onlineStatus={fiendOnlineStatus || ""}
         fullName={conversation.friend_profile.fullname}
+        friendId={conversation.friend_profile.id}
         avatar={conversation.friend_profile.avatar}
         render={() => {
           return (
@@ -50,10 +55,10 @@ const Chat = () => {
       />
       {/* Content Message */}
 
-      <div className="pt-4 pb-2 md:pt-6 md:pb-3 bg-[var(--color-grey-200)] overflow-y-scroll overflow-x-hidden flex-1">
+      <ChatLayoutContent>
         {/* Friend chat */}
         <ChatMessageList />
-      </div>
+      </ChatLayoutContent>
       {/* footer */}
       <ChatSendMessage
         roomId={conversation.room_id}
@@ -63,7 +68,7 @@ const Chat = () => {
         onSendMessage={handleSubmitMessage}
         onSetMessage={handleSetMessage}
       />
-    </div>
+    </ChatLayout>
   );
 };
 export default Chat;

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { BsImage } from "react-icons/bs";
 import Avatar from "src/components/avatar";
 import DateCalculator from "src/components/date-calculator.component";
@@ -8,6 +9,8 @@ import Modal from "src/components/modal";
 import ConfirmDelete from "src/components/confirm-delete.component";
 import { updateConversation } from "src/services/chats.service";
 import useChatsConversation from "./chats-conversation.hook";
+import { QueryKey } from "src/constants/query-key.constant";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Conversation = ({
   fullName,
@@ -30,6 +33,8 @@ const Conversation = ({
   type: "group" | "normal";
   lastMsg: string;
 }) => {
+  const { t } = useTranslation("chats");
+  const query = useQueryClient();
   const {
     user,
     isDeletingWholeConversation,
@@ -67,16 +72,16 @@ const Conversation = ({
                 {isHovered && <Menu.Toggle id={randomId.toString()} />}
               </div>
               <Menu.List id={randomId.toString()}>
-                <Menu.Option onClick={() => {}}>
+                {/* <Menu.Option onClick={() => {}}>
                   Hide this conversation
-                </Menu.Option>
+                </Menu.Option> */}
                 <Modal.Button name="delete">
                   <Menu.Option
                     disable={isDeletingWholeConversation}
                     className="text-[var(--color-danger)]"
                     onClick={() => {}}
                   >
-                    Delete this conversation
+                    {t("delete")}
                   </Menu.Option>
                 </Modal.Button>
               </Menu.List>
@@ -88,6 +93,9 @@ const Conversation = ({
                   onConfirm={() =>
                     deleteWholeConversation({ roomId, userId: user!.id }).then(
                       async () => {
+                        query.refetchQueries({
+                          queryKey: [QueryKey.GET_CONVERSATIONS],
+                        });
                         await updateConversation({
                           userId: user!.id,
                           roomId,
@@ -102,20 +110,20 @@ const Conversation = ({
               </Modal.Window>
             </div>
             <div className="flex justify-between">
-              <p className="text-[10px] md:text-xs flex items-center gap-1 max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+              <div className="text-[10px] md:text-xs flex items-center gap-1 max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
                 {/* last message is an img */}
-                {authorId === user!.id ? "You" : `${fullName}`} :{" "}
+                {authorId === user!.id ? t("you") : `${fullName}`} :{" "}
                 {lastMsg.startsWith(
                   "https://mthclejfvjbgltslemdj.supabase.co/storage/v1/object/public/message_img/"
                 ) ? (
                   <p className="flex items-center gap-1.5">
-                    Image
+                    {t("image")}
                     <BsImage />
                   </p>
                 ) : (
                   lastMsg
                 )}
-              </p>
+              </div>
 
               {unReadMessage > 0 && (
                 <SmallNotification quantity={unReadMessage} />

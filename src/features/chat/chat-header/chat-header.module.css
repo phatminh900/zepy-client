@@ -9,3 +9,7 @@
     white-space: nowrap;
   }
 }
+
+.highlight {
+  color: var(--color-primary);
+}

@@ -22,7 +22,7 @@ import { createNewConversation } from "src/services/chats.service";
 export const useGetFriendRequests = () => {
   const { user } = useGetUser();
   const { data: friendRequests } = useQuery({
-    queryKey: [QueryKey.FRIEND_REQUEST, QueryKey.SEND_FIEND_REQUEST],
+    queryKey: [QueryKey.FRIEND_REQUEST],
     queryFn: () => getAllFriendRequests({ userId: user!.id }),
   });
   return { friendRequests };
@@ -44,11 +44,7 @@ export const useFriendRequest = () => {
       onSuccess: () => {
         toast.success("Sent a request to this friend");
         query.invalidateQueries({
-          queryKey: [
-            QueryKey.FRIEND_REQUEST,
-            QueryKey.SEND_FIEND_REQUEST,
-            QueryKey.REQUESTED_FRIEND,
-          ],
+          queryKey: [QueryKey.FRIEND_REQUEST],
         });
       },
       onError: () => toast.error("There were some errors try again."),
@@ -58,6 +54,7 @@ export const useFriendRequest = () => {
     onSuccess: async (data) => {
       toast.success("Successfully added a new friend");
       query.invalidateQueries({ queryKey: [QueryKey.REQUESTED_FRIEND] });
+
       const [user1, user2] = data;
       // after accepting a friend delete a record in friend_request
 
@@ -96,7 +93,7 @@ export const useFriendRequest = () => {
     onSuccess: () => {
       toast.success("Successfully rejected friend");
       query.invalidateQueries({
-        queryKey: [QueryKey.FRIEND_REQUEST, QueryKey.REQUESTED_FRIEND],
+        queryKey: [QueryKey.FRIEND_REQUEST],
       });
     },
     onError: () => toast.error("There were some errors try again."),

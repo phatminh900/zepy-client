@@ -1,0 +1,11 @@
+{
+  "signUp": "SignUp",
+  "fullName": "Full Name",
+  "email": "Email",
+  "password": "Your Password",
+  "confirmPassword": "Confirm Password",
+  "hadAccount": "Already have an account?",
+  "sign Up": "Sign Up",
+  "signingUp": "Signing Up",
+  "successSign": "Sign up successfully"
+}

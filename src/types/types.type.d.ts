@@ -86,11 +86,37 @@ interface IFriend {
   room_id: string;
   friend_profile: User;
 }
-
+interface IGroup {
+  name: string;
+  id: string;
+  avatar: string;
+}
 interface IGroup {
   id: string;
   main_author_id: string;
   vice_author_id?: string;
   room_id: string;
   avatar: string;
+}
+interface ICallData {
+  id: string;
+  user_id: string;
+  user_receive_id: string;
+  user_call_profile: { id: string; fullname: string; avatar: string };
+  user_receive_profile: { id: string; fullname: string; avatar: string };
+}
+
+interface ITodoList {
+  id: string;
+  title: string;
+  created_at: string;
+  user_id: string;
+  default: boolean;
+}
+interface ITodoTask {
+  id: string;
+  title: string;
+  created_at: string;
+  isChecked: boolean;
+  deadline?: string;
 }

@@ -9,7 +9,7 @@ const Chats = () => {
   const { isMoBile, isOpenTab } = useOpenTableMobile();
   const content = (
     <MainColumn>
-      {/* Heaser */}
+      {/* Header */}
       <ChatsHeader />
       <ChatLists />
     </MainColumn>

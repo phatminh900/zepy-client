@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useRef, useLayoutEffect, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useGetMessages } from "src/features/chat/chat.hook";
 import { useGetUser } from "src/hooks/useAuth";
@@ -15,10 +15,12 @@ const useChatMessageList = () => {
   }>({ isTyping: false, userId: "", fullName: "" });
   const { id: roomId } = useParams();
   const newMessages = useAppSelector((store) => store.chat.messages);
-  useEffect(() => {
+  const prevLastMessage = useRef<Element | null>(null);
+  useLayoutEffect(() => {
     // lastMessageRef.current?.scrollIntoView({ behavior: "instant" });
     const messageItems = [...document.querySelectorAll(".message-item")];
     const lastMessage = messageItems[messageItems.length - 1];
+    prevLastMessage.current = lastMessage;
     if (lastMessage) {
       (lastMessage as HTMLLIElement).style.paddingBottom = "30px";
       // means ==> me message doesn't have avatar
@@ -37,6 +39,9 @@ const useChatMessageList = () => {
       //   `<p>Hello</p>`
       // );
       lastMessage.scrollIntoView({ behavior: "instant" });
+      return () => {
+        (prevLastMessage.current as HTMLDivElement).style.padding = "0";
+      };
     }
   }, [messages, newMessages]);
   useEffect(() => {

@@ -1,4 +1,4 @@
 .sidebar a:global(.active) {
   background-color: var(--color-primary-light);
-  color: var(--color-primary-dark);
+  color: var(--color-grey-700);
 }

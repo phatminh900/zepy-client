@@ -1,0 +1,16 @@
+export enum PARAMS {
+  isOpenTab = "isOpenTab",
+  unRead = "unRead",
+  email = "email",
+  name = "name",
+  groupName = "groupName",
+  group = "group",
+  friendName = "friendName",
+  roomId = "roomId",
+  otherSocketId = "otherSocketId",
+  meSocketId = "meSocketId",
+  userCallId = "userCallId",
+  userReceiveCallId = "userReceiveCallId",
+  selectMessageId = "selectMessageId",
+  openTask = "openTask",
+}

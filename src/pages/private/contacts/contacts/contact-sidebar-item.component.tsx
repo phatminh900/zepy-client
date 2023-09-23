@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import SmallNotification from "src/components/small-notification";
-import { PARAMS } from "src/constants/seachParams.constant";
+import { PARAMS } from "src/constants/searchParams.constant";
 import useOpenTableMobile from "src/hooks/useOpenTab-mobile.hook";
 
 const ContactSideBarItem = ({
@@ -18,7 +18,7 @@ const ContactSideBarItem = ({
 }) => {
   const { isMoBile, isOpenTab } = useOpenTableMobile();
   return (
-    <li className="relative" key={path}>
+    <li className="relative hover:bg-[var(--color-primary-light)]" key={path}>
       <NavLink
         to={{
           pathname: path,
@@ -27,7 +27,7 @@ const ContactSideBarItem = ({
             : "",
         }}
         state={{ prevLink: pathname + "/" + path }}
-        className="py-[var(--gutter-left-component)] pl-[var(--gutter-left-component)] w-full font-semibold h-full  flex gap-3.5"
+        className="py-[var(--gutter-left-component)]   pl-[var(--gutter-left-component)] w-full font-semibold h-full  flex gap-3.5"
       >
         <span className=" text-xl">{icon}</span>
         <span>{label}</span>

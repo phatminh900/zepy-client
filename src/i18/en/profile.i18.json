@@ -1,0 +1,11 @@
+{
+  "profile": "Profile",
+  "personalInformation": "Personal Information",
+  "gender": "Gender",
+  "male": "Male",
+  "female": "Female",
+  "updateInformation": "Update your information",
+  "sendMessage": "Send a message",
+  "cancelRequest": "Cancel Request",
+  "addFriend": "Add Friend"
+}

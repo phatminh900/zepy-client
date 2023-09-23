@@ -21,8 +21,8 @@ const InputRadio = ({
         type="radio"
         name={name}
         id={id}
+        checked={defaultChecked}
         className="cursor-pointer"
-        defaultChecked={defaultChecked}
         {...rest}
       />
     </div>

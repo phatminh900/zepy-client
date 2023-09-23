@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { HiOutlineCheck } from "react-icons/hi";
 import Avatar from "src/components/avatar";
 
@@ -7,17 +7,23 @@ const Friend = ({
   id,
   fullName,
   avatar,
+  defaultAdded = false,
 }: {
   id: string;
   fullName: string;
   avatar: string;
   onHandleAddFriend: ({ id }: { id: string }) => void;
+  defaultAdded?: boolean;
 }) => {
-  const [isAdded, setIsAdded] = useState(false);
+  const [isAdded, setIsAdded] = useState(defaultAdded);
   const handleClick = () => {
     setIsAdded((prev) => !prev);
-    onHandleAddFriend({ id });
   };
+  useEffect(() => {
+    if (isAdded) {
+      onHandleAddFriend({ id });
+    }
+  }, [isAdded, id, onHandleAddFriend]);
   return (
     <li
       onClick={handleClick}

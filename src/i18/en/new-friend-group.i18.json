@@ -1,0 +1,25 @@
+{
+  "searchFriend": {
+    "findFriend": "Find a friend",
+    "invalidEmailNotification": "Please enter a valid email",
+    "invalidEmail": "Invalid email"
+  },
+  "friend": {
+    "title": "Add a new friend",
+    "emailAddress": "Email address",
+    "cancel": "Cancel",
+    "find": "Find",
+    "noResult": "No contact with that email.",
+    "searching": "Searching"
+  },
+  "group": {
+    "title": "Create a new group",
+    "yourGroupName": "Your group's name",
+    "addFriend": "Add your friends into group",
+    "findFriends": "Find your friends",
+
+    "allFriends": "All your friends",
+    "create": "Create a new group",
+    "creating": "Creating"
+  }
+}

@@ -1,0 +1,26 @@
+.answerCall > svg {
+  font-weight: 700;
+  animation: name duration timing-function delay iteration-count direction
+    fill-mode;
+  animation: call_animation 0.6s ease-in infinite;
+}
+@keyframes call_animation {
+  0% {
+    rotate: -20deg;
+  }
+  20% {
+    rotate: -5deg;
+  }
+  40% {
+    rotate: 0deg;
+  }
+  60% {
+    rotate: 20deg;
+  }
+  80% {
+    rotate: 5deg;
+  }
+  100% {
+    rotate: 0deg;
+  }
+}

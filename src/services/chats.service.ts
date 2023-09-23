@@ -1,6 +1,7 @@
-import { updateImg } from "src/utils/update-img.util";
 import supabase from "./supabase";
 import { throwError } from "src/utils/error.util";
+import { updateImg } from "src/utils/update-img.util";
+
 export async function getConversations({ userId }: { userId: string }) {
   let query = supabase
     .from("conversation")
@@ -218,7 +219,9 @@ export async function createImgMessage({
         room_id: roomId,
       },
     ])
-    .select()
+    .select(
+      "id,author_id,created_at,emojis,isRead,message,room_id,user_id,author_profile(avatar,id,fullname,email,gender)"
+    )
     .single();
   if (error) {
     console.error(error);
@@ -292,3 +295,32 @@ export async function deleteAllMessages({
   // });
   return data;
 }
+
+export const getSearchedMessage = async ({
+  message,
+  roomId,
+  userId,
+}: {
+  roomId: string;
+  userId: string;
+  message: string;
+}) => {
+  const { data, error } = await supabase
+    .from("message")
+    .select("created_at,id ,message,author_profile(avatar, fullname) ")
+    .eq("room_id", roomId)
+    .eq("user_id", userId)
+    .ilike("message", `${message}%`);
+  if (error) {
+    console.error(error);
+    throwError(error, error.message);
+  }
+  return data as
+    | {
+        id: string;
+        created_at: string;
+        message: string;
+        author_profile: IUserProfile;
+      }[]
+    | null;
+};

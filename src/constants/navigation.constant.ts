@@ -15,4 +15,5 @@ export enum ROUTES {
   SEARCH = "/search",
   GROUP = "/GROUP",
   CHAT_GROUP = "/chats/group",
+  CALL = "/call/:id",
 }

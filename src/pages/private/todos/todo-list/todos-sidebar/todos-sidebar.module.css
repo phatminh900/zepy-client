@@ -1,0 +1,5 @@
+.list a:global(.active) {
+  background-color: var(--color-primary-light);
+  color: var(--color-grey-700);
+  font-weight: 700;
+}

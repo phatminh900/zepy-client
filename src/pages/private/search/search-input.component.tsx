@@ -1,11 +1,13 @@
 import { useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { HiOutlineSearch } from "react-icons/hi";
 import validator from "validator";
 import { useForm } from "react-hook-form";
 import { useLocation, useSearchParams } from "react-router-dom";
-import { PARAMS } from "src/constants/seachParams.constant";
+import { PARAMS } from "src/constants/searchParams.constant";
 import { ROUTES } from "src/constants/navigation.constant";
 const SearchInput = () => {
+  const { t } = useTranslation("addContacts");
   const [searchParams, setSearchParams] = useSearchParams();
   const { pathname } = useLocation();
   const {
@@ -43,15 +45,16 @@ const SearchInput = () => {
         type="text"
         {...register("search", {
           validate: (val) =>
-            validator.isEmail(val) || "Please enter a valid email",
+            validator.isEmail(val) ||
+            t("searchFriend.invalidEmailNotification"),
         })}
-        placeholder="Find a friend"
+        placeholder={t("searchFriend.findFriend")}
         className="bg-inherit input-search  text-xs md:text-sm w-full"
       />
 
       {errors?.search?.message && (
         <p className="text-[var(--color-danger)] absolute top-full left-0 text-xs">
-          Invalid email
+          {t("searchFriend.invalidEmail")}
         </p>
       )}
     </form>

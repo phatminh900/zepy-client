@@ -1,12 +1,13 @@
+import { useTranslation } from "react-i18next";
 import { useGetUser } from "src/hooks/useAuth";
 import { ROUTES } from "src/constants/navigation.constant";
 import { Link, Navigate } from "react-router-dom";
 import Modal from "src/components/modal";
 import Avatar from "src/components/avatar";
-import { HiOutlineCamera } from "react-icons/hi";
 import { useUpdateUserAvatar } from "src/features/user/user-feature.hook";
 
 const MyProfile = () => {
+  const { t } = useTranslation("profile");
   const { user, refetch } = useGetUser();
   const { updateAvatar } = useUpdateUserAvatar();
   if (!user) return <Navigate to={ROUTES.LOGIN} />;
@@ -51,15 +52,15 @@ const MyProfile = () => {
       <div className="px-4">
         <h3 className="mt-11 mb-5 text-2xl font-bold">{user.fullname}</h3>
         <div>
-          <h4 className="font-semibold mb-6">Personal information</h4>
+          <h4 className="font-semibold mb-6">{t("personalInformation")}</h4>
           <div className="flex flex-col gap-3 ">
             <div className="flex ">
               <p className="w-full max-w-[100px]">Email:</p>
               <p>{user.email}</p>
             </div>
             <div className="flex !m-0">
-              <p className="w-full max-w-[100px]"> Gender:</p>
-              <p>Male</p>
+              <p className="w-full max-w-[100px]"> {t("gender")}:</p>
+              <p>{user.gender}</p>
             </div>
           </div>
         </div>
@@ -70,7 +71,7 @@ const MyProfile = () => {
             className="p-3 rounded-md border border-[var(--color-grey-500)]"
             to={ROUTES.SETTINGS}
           >
-            Update your information
+            {t("updateInformation")}
           </Link>
         </Modal.Button>
       </div>

@@ -38,7 +38,7 @@ export async function getAllGroups({ userId }: { userId: string }) {
     throwError(error, error.message);
   }
   return groupResult as unknown as {
-    group: { name: string; id: string; avatar: string };
+    group: IGroup;
     count: number;
   }[];
 }

@@ -1,12 +1,14 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { DayPicker } from "react-day-picker";
 import Button from "src/components/button";
-import DayPicker from "src/components/day-picker";
 import InputRadio from "src/components/input-radio";
 import RowLayout from "../row-layout.component";
 import { useGetUser } from "src/hooks/useAuth";
 import { useUpdateUserInfo } from "src/features/user/user-feature.hook";
 
 const PersonalSettings = () => {
+  const { t } = useTranslation("settings");
   const { user, refetch } = useGetUser();
   const { isLoading: isUpdatingName, updateInfo: updateName } =
     useUpdateUserInfo("fullname");
@@ -40,7 +42,7 @@ const PersonalSettings = () => {
   return (
     <div>
       <h3 className="font-semibold py-3 px-2.5 border-b border-b-[var(--color-grey-500)]">
-        Profile
+        {t("profile")}
       </h3>
       <div>
         <RowLayout className="p-3 flex" title="Email">
@@ -49,32 +51,31 @@ const PersonalSettings = () => {
           </div>
         </RowLayout>
         <form onSubmit={handleSubmit} className=" p-3">
-          <RowLayout className="flex items-center" title="Your name">
+          <RowLayout className="flex items-center" title={t("yourName")}>
             <div className="py-2.5 px-2 bg-[var(--color-grey-200)] ">
               <input
                 type="text"
-                defaultValue={user!.fullname}
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
               />
             </div>
           </RowLayout>
           {/* Gender */}
-          <RowLayout title="Gender">
+          <RowLayout title={t("gender")}>
             <div className="flex gap-5">
               <InputRadio
                 name="gender"
                 id="male"
                 onChange={(e) => setGender("male")}
                 checked={gender === "male"}
-                label="Male"
+                label={t("male")}
               />
               <InputRadio
                 onChange={(e) => setGender("female")}
                 name="gender "
                 checked={gender === "female"}
                 id="female"
-                label="Female"
+                label={t("female")}
               />
             </div>
           </RowLayout>
@@ -82,7 +83,7 @@ const PersonalSettings = () => {
             <p>BirthDay</p>
           </RowLayout>
           <Button variation="primary" className=" p-3">
-            {isUpdatingGender || isUpdatingName ? "Updating" : "Update"}
+            {isUpdatingGender || isUpdatingName ? t("updating") : t("update")}
           </Button>
         </form>
       </div>

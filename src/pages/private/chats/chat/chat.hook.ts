@@ -10,12 +10,13 @@ import {
   useSendMessage,
   useSetIsReadConversation,
 } from "src/features/chat/chat.hook";
-import { addMessage, getMessages } from "src/features/chat/chat.slice";
+import { addMessage, getMessages } from "src/store/chat/chat.slice";
 import { useGetUser } from "src/hooks/useAuth";
 import {
   useAppDispatch,
   useAppSelector,
 } from "src/hooks/useSelectorDispatch.hook";
+import { socket } from "src/contexts/call.context";
 
 const useChatHook = () => {
   const { user: userData } = useGetUser();
@@ -52,8 +53,10 @@ const useChatHook = () => {
       userId: conversation!.friend_id,
     };
     sendImg(userMessage).then(async (data) => {
+      if (data!.user_id === user!.id) dispatch(addMessage(data!));
+
       await updateUsersConversation(data!, true, "normal");
-      query.invalidateQueries({
+      query.refetchQueries({
         queryKey: [QueryKey.GET_CONVERSATIONS],
       });
     });
@@ -68,7 +71,7 @@ const useChatHook = () => {
         });
       }
       await updateUsersConversation(data!, false, "normal");
-      query.invalidateQueries({
+      query.refetchQueries({
         queryKey: [QueryKey.GET_CONVERSATIONS],
       });
     });
@@ -94,7 +97,7 @@ const useChatHook = () => {
       if (data!.user_id === user!.id) dispatch(addMessage(data!));
 
       await updateUsersConversation(data!, true, "normal");
-      query.invalidateQueries({
+      query.refetchQueries({
         queryKey: [QueryKey.GET_CONVERSATIONS],
       });
     });
@@ -111,8 +114,14 @@ const useChatHook = () => {
           },
         });
       }
-      await updateUsersConversation(data!, false, "normal");
-      query.invalidateQueries({
+      const userData = await updateUsersConversation(data!, false, "normal");
+      if (userData) {
+        socket.emit("send-message-notification", {
+          userIdReceive: userData.user_id,
+          unReadMessageCount: userData.unReadMessageCount,
+        });
+      }
+      query.refetchQueries({
         queryKey: [QueryKey.GET_CONVERSATIONS],
       });
     });

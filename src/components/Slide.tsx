@@ -11,7 +11,9 @@ const Slide = ({ title, height = 100, width = 100, text, imgSrc }: ISlide) => {
       </div>
       {text || title ? (
         <div className="text-center mt-4">
-          <h3 className="text-[var(--color-primary)] text-lg mb-4">{title}</h3>
+          <h3 className="text-[var(--color-primary)] text-lg mb-2 lg:mb-4">
+            {title}
+          </h3>
           <p>{text}</p>
         </div>
       ) : null}

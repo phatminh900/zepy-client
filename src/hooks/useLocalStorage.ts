@@ -1,10 +1,6 @@
 import { useEffect, useState } from "react";
+import { getItem, setItem } from "src/utils/browser.util";
 
-const getItem = (key: string) => {
-  const data = localStorage.getItem(key);
-  if (!data || data === "null") return null;
-  return JSON.parse(data);
-};
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const useLocalStorage = (key: string, defaultValue?: any) => {
   const [value, setValue] = useState(
@@ -15,7 +11,7 @@ const useLocalStorage = (key: string, defaultValue?: any) => {
   );
 
   useEffect(() => {
-    localStorage.setItem(key, JSON.stringify(value));
+    setItem(key, value);
   }, [value, key]);
   return [value, setValue];
 };

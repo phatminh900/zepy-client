@@ -5,7 +5,7 @@ import {
   useSendMessage,
   useSetIsReadConversation,
 } from "src/features/chat/chat.hook";
-import { addMessage, getMessages } from "src/features/chat/chat.slice";
+import { addMessage, getMessages } from "src/store/chat/chat.slice";
 import {
   useGetAllGroupMembers,
   useGetGroupConverSation,

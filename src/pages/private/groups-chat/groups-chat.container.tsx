@@ -5,6 +5,10 @@ import Loader from "src/ui/Loader";
 import ChatHeader from "src/features/chat/chat-header/chat-header.component";
 import ChatMessageList from "src/features/chat/body/chat-message-list.component";
 import ChatSendMessage from "src/features/chat/footer/chat-send-message.component";
+import {
+  ChatLayout,
+  ChatLayoutContent,
+} from "src/components/chat-layout.component";
 const GroupChat = () => {
   const {
     handleSubmitMessage,
@@ -26,7 +30,7 @@ const GroupChat = () => {
     return <Navigate to={ROUTES.CHATS} />;
   if (!conversation) return null;
   return (
-    <div className="grid h-[100dvh] grid-rows-[65px_1fr_40px] md:grid-rows-[72px_1fr_60px] overflow-hidden [&>*]:px-2 md:[&>*]:px-5">
+    <ChatLayout>
       {/* Header */}
       <ChatHeader
         fullName={conversation.group.name}
@@ -38,10 +42,10 @@ const GroupChat = () => {
         )}
       />
       {/* Content Message */}
-      <div className="pt-4 pb-2 md:pt-6 md:pb-3 bg-[var(--color-grey-200)] overflow-y-scroll flex-1">
+      <ChatLayoutContent>
         {/* Friend chat */}
         <ChatMessageList />
-      </div>
+      </ChatLayoutContent>
       <ChatSendMessage
         roomId={conversation.group.id}
         message={message}
@@ -50,7 +54,7 @@ const GroupChat = () => {
         onSendMessage={handleSubmitMessage}
         onSetMessage={handleSetMessage}
       />
-    </div>
+    </ChatLayout>
   );
 };
 export default GroupChat;

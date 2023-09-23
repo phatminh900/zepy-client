@@ -1,5 +1,5 @@
 import { useSearchParams } from "react-router-dom";
-import { PARAMS } from "src/constants/seachParams.constant";
+import { PARAMS } from "src/constants/searchParams.constant";
 import useWindowDimensions from "src/hooks/useWindowDimension.hook";
 
 const useOpenTableMobile = () => {

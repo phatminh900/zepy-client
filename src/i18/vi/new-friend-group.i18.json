@@ -1,0 +1,23 @@
+{
+  "searchFriend": {
+    "findFriend": "Tìm bạn",
+    "invalidEmailNotification": "VUi lòng nhập đúng địa chỉ email",
+    "invalidEmail": "Địa chỉ email không hợp lệ"
+  },
+  "friend": {
+    "title": "Thêm bạn mới",
+    "emailAddress": "Địa chỉ Email",
+    "cancel": "Hủy bỏ",
+    "find": "Tìm",
+    "noResult": "Không tìm thấy ai với this email",
+    "searching": "Đang tìm"
+  },
+  "group": {
+    "title": "Tạo nhóm mới",
+    "yourGroupName": "Tên nhóm",
+    "addFriend": "Thêm bạn vào nhóm",
+    "findFriends": "Tìm bạn",
+    "allFriends": "Tất cả bạn bè",
+    "create": "Tạo nhóm mới"
+  }
+}

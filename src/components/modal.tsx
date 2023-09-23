@@ -49,7 +49,8 @@ const Button = ({ name, children, onClick }: IButton) => {
     },
   });
 };
-const Window = ({
+
+const Window = memo(function Window({
   children,
   name,
   className,
@@ -57,7 +58,7 @@ const Window = ({
   className?: string;
   children: React.ReactNode;
   name: string;
-}) => {
+}) {
   const { close, openName } = useModalContext();
   const { ref } = useClickOutside(close, true);
   if (openName !== name) return null;
@@ -89,7 +90,7 @@ const Window = ({
       </div>
     </div>
   );
-};
+});
 
 // Modal.displayName="Button"
 // Modal.displayName='Window'

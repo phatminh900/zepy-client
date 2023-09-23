@@ -1,4 +1,6 @@
 import { cloneElement, useState, useRef, useEffect, useCallback } from "react";
+import useSound from "src/hooks/useSound.hook";
+import pageTurnMp3 from "src/assets/mp3/page-flip.wav";
 export interface ISlide {
   height?: number;
   width?: number;
@@ -14,16 +16,25 @@ interface ISlider {
 }
 const Slider = ({ data, render, children }: ISlider) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const { play } = useSound(pageTurnMp3);
   const slidesRef = useRef<HTMLUListElement | null>(null);
   const prevSlide = useCallback(() => {
+    play();
     if (currentSlide === 0) return setCurrentSlide(data.length - 1);
     setCurrentSlide((prev) => --prev);
-  }, [currentSlide, setCurrentSlide, data.length]);
+  }, [currentSlide, setCurrentSlide, data.length, play]);
   const nextSlide = useCallback(() => {
+    play();
     if (currentSlide === data.length - 1) return setCurrentSlide(0);
     setCurrentSlide((prev) => ++prev);
-  }, [currentSlide, setCurrentSlide, data.length]);
-  const gotoSlide = useCallback((slide: number) => setCurrentSlide(slide), []);
+  }, [currentSlide, setCurrentSlide, data.length, play]);
+  const gotoSlide = useCallback(
+    (slide: number) => {
+      setCurrentSlide(slide);
+      play();
+    },
+    [play]
+  );
   //
   useEffect(() => {
     const slides = [...slidesRef.current!.querySelectorAll("li")!];
@@ -33,7 +44,8 @@ const Slider = ({ data, render, children }: ISlider) => {
           (i - currentSlide) * 100
         }% 0`)
     );
-  }, [currentSlide]);
+  }, [currentSlide, data]);
+
   // 2s automatically move to the next slide
   //   TODO:PRODUCTION
   //   useEffect(() => {
@@ -41,7 +53,7 @@ const Slider = ({ data, render, children }: ISlider) => {
   //   }, [nextSlide]);
   return (
     <div className="h-full ">
-      <ul className="relative overflow-hidden h-full" ref={slidesRef}>
+      <ul className="relative overflow-hidden h-[95%] " ref={slidesRef}>
         {data.map(render)}
       </ul>
       {/* Buttons to navigate */}

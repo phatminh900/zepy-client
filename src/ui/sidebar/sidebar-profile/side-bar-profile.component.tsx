@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import Avatar from "src/components/avatar";
 import Menu from "src/components/menu";
@@ -13,7 +14,7 @@ const SideBarProfile = ({
   placeMenuPosition?: (e: React.MouseEvent) => { top: number; right: number };
 }) => {
   const navigate = useNavigate();
-
+  const { t } = useTranslation("sidebar");
   const { user, refetch } = useGetUser();
   const { logout, isLoading: isLoggingOut } = useLogout();
   const { updateAvatar } = useUpdateUserAvatar();
@@ -37,7 +38,7 @@ const SideBarProfile = ({
             </Menu.Option>
             {/* Modal */}
             <Modal.Button name="open-profile">
-              <Menu.Option onClick={() => {}}>Profile</Menu.Option>
+              <Menu.Option onClick={() => {}}>{t("profile")}</Menu.Option>
             </Modal.Button>
 
             <Menu.Option
@@ -45,14 +46,14 @@ const SideBarProfile = ({
                 navigate(ROUTES.SETTINGS);
               }}
             >
-              Settings
+              {t("settings")}
             </Menu.Option>
             <Menu.Option
               disable={isLoggingOut}
               className="text-[var(--color-danger)]"
               onClick={logout}
             >
-              Log out
+              {t("logout")}
             </Menu.Option>
           </Menu.List>
         </Menu>

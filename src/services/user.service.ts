@@ -39,7 +39,7 @@ export const updateUserAvatar = async (userId: string, avatar: any) => {
     const avatarPath = await updateImg(userId, "avatars", avatar);
     await updateUser({
       userId,
-      field: "avatars",
+      field: "avatar",
       value: avatarPath,
     });
   } catch (error) {

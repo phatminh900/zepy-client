@@ -2,13 +2,14 @@ import { Link } from "react-router-dom";
 import Avatar from "src/components/avatar";
 import Menu from "src/components/menu";
 import Modal from "src/components/modal";
+import OnlineStatus from "src/components/online-status.component";
 import Profile from "src/components/profile";
 import { ROUTES } from "src/constants/navigation.constant";
-import { PARAMS } from "src/constants/seachParams.constant";
+import { PARAMS } from "src/constants/searchParams.constant";
 import { useFriendRequest } from "src/features/contact/contact.hook";
 import { useGetUser } from "src/hooks/useAuth";
 import useOpenTableMobile from "src/hooks/useOpenTab-mobile.hook";
-interface IFriendProps extends Omit<User, "status"> {
+interface IFriendProps extends User {
   roomId: string;
 }
 const Friend = ({
@@ -16,6 +17,7 @@ const Friend = ({
   fullname,
   gender,
   avatar,
+  status,
   roomId,
   id: friendId,
 }: IFriendProps) => {
@@ -29,14 +31,17 @@ const Friend = ({
     chatPath += `?${PARAMS.isOpenTab}=1`;
   }
   return (
-    <li className=" px-2 py-2.5 ">
+    <li className="relative px-2 py-2.5 ">
       <Link
         className="flex w-full justify-between cursor-pointer hover:bg-[var(--color-grey-100)] h-full "
         to={chatPath}
       >
         <Modal>
           <div className="flex items-center gap-2">
-            <Avatar size="large" src={avatar} />
+            <div className="relative">
+              <Avatar size="large" src={avatar} />
+              {status === "Online" && <OnlineStatus />}
+            </div>
             <h3 className="font-semibold">{fullname}</h3>
           </div>
           <div>

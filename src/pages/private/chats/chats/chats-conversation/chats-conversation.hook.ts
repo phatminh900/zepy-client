@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "src/constants/navigation.constant";
-import { PARAMS } from "src/constants/seachParams.constant";
+import { PARAMS } from "src/constants/searchParams.constant";
 import { useDeleteAllMessages } from "src/features/chat/chat.hook";
 import { useGetUser } from "src/hooks/useAuth";
 import useOpenTableMobile from "src/hooks/useOpenTab-mobile.hook";

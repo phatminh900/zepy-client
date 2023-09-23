@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import {
   requestedDays,
   requestedTimeHours,
@@ -13,6 +14,7 @@ const DateCalculator = ({
   time: Date | string;
   className?: string;
 }) => {
+  const { t } = useTranslation("date");
   const mins = requestedTimeMinutes(time);
   const hours = requestedTimeHours(time);
   const days = requestedDays(time);
@@ -21,13 +23,16 @@ const DateCalculator = ({
     <span className={twMerge(" text-[10px] md:text-xs italic flex", className)}>
       {mins > 59 &&
         mins < 1439 &&
-        `${hours} ${hours === 1 ? "hour" : "hours"} ago`}
+        `${hours} ${hours === 1 ? t("hour") : t("hours")} ${t("ago")}`}
       {/* {seconds < 59 && `${seconds} seconds ago`} */}
-      {mins === 0 && seconds > 1 && `${seconds} seconds ago`}
-      {mins === 0 && seconds == 0 && `Just now`}
-      {mins > 1 && mins < 59 && `${mins} minutes ago`}
+      {mins === 0 && seconds > 1 && `${seconds} ${t("seconds")} ${t("ago")}`}
+      {mins === 0 && seconds == 0 && `${t("now")}`}
+      {mins > 1 && mins < 59 && `${mins} ${t("mins")} ${t("ago")}`}
 
-      {mins > 1440 && `${days > 1 ? `${days} days ago` : `Yesterday`}`}
+      {mins > 1440 &&
+        `${
+          days > 1 ? `${days} ${t("days")} ${t("ago")}` : `${t("yesterday")}`
+        }`}
     </span>
   );
 };

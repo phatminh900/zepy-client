@@ -1,37 +1,38 @@
+import { useTranslation } from "react-i18next";
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi";
 import Slide from "src/components/Slide";
 import Slider, { ISlide } from "src/components/slider";
 import { useThemeContext } from "src/contexts/theme.context";
 
 const Greeting = () => {
+  const { t } = useTranslation("greeting");
   const { isDarkMode } = useThemeContext();
   const sliders: ISlide[] = [
     {
       imgSrc: `/imgs/meeting-${isDarkMode ? "dark" : "light"}.svg`,
-      text: "Meet your family, friends, coworkers,lovers ",
-      title: "More conversation, less text",
+      text: t("description.1"),
+      title: t("title.1"),
     },
     {
       imgSrc: `/imgs/schedule-${isDarkMode ? "dark" : "light"}.svg`,
-      text: "Meet multiple people with just 1 click.",
-      title: "Group chats",
+      text: t("description.2"),
+      title: t("title.2"),
     },
     {
       imgSrc: `/imgs/work-${isDarkMode ? "dark" : "light"}.svg`,
-      text: "Finish tasks , do something useful and enjoy your life",
-      title: "Todo lists",
+      text: t("description.3"),
+      title: t("title.3"),
     },
     {
       imgSrc: `/imgs/task-${isDarkMode ? "dark" : "light"}.svg`,
-      text: "Increase productivity and creativity",
-      title: "Todo lists",
+      text: t("description.4"),
+      title: t("title.4"),
     },
   ];
   return (
     <div className="md:block  relative w-4/5 m-auto py-[10%] h-full ">
-      <h3 className="mb-6 text-center text-xl">
-        Welcome to{" "}
-        <strong>Zepy &mdash; The best chat application in the town.</strong>
+      <h3 className=" mb-4 lg:mb-6 text-center text-xl">
+        {t("introduction")} <strong>Zepy &mdash; {t("sologan")}.</strong>
       </h3>
       <Slider
         data={sliders}
@@ -99,7 +100,7 @@ const Dots = ({
   onGotoSlide: (slide: number) => void;
 }) => {
   return (
-    <ul className="flex gap-3 absolute bottom-[10%] w-full justify-center ">
+    <ul className="mt-4 flex gap-3 relative bottom-[10%] w-full justify-center ">
       {sliders.map((d, index) => (
         <li key={d.imgSrc}>
           <button

@@ -15,7 +15,9 @@ import {
   getConversations,
   updateConversation,
 } from "src/services/chats.service";
-import { addMessage, setChannel } from "./chat.slice";
+import { addMessage, setChannel } from "src/store/chat/chat.slice";
+import { getSearchedMessage } from "src/services/chats.service";
+
 import supabase from "src/services/supabase";
 
 export async function updateUsersConversation(
@@ -48,7 +50,7 @@ export async function updateUsersConversation(
       const friendConversationUnReadMessage =
         conversation?.unReadMessageCount || 0;
       // // update friend unread message
-      await updateConversation({
+      const data = await updateConversation({
         userId: message.user_id,
         roomId: message.room_id,
         field: "unReadMessageCount",
@@ -56,6 +58,7 @@ export async function updateUsersConversation(
         conversationType,
         // last message
       });
+      return data;
     }
   } catch (error) {
     console.log(error);
@@ -190,7 +193,6 @@ export const useDeleteMessage = () => {
   return { deleteMessage, isDeletingMessage };
 };
 export const useDeleteAllMessages = () => {
-  const query = useQueryClient();
   const {
     mutateAsync: deleteWholeConversation,
     isLoading: isDeletingWholeConversation,
@@ -198,9 +200,21 @@ export const useDeleteAllMessages = () => {
     mutationFn: deleteAllMessages,
     onSuccess: () => {
       toast.success("Successfully");
-      query.invalidateQueries({ queryKey: [QueryKey.GET_CONVERSATIONS] });
     },
     onError: () => toast.error("Fail to send this message try again."),
   });
   return { deleteWholeConversation, isDeletingWholeConversation };
 };
+
+const useSearchMessage = () => {
+  const {
+    mutateAsync: findMessage,
+    isLoading: isFindingMessage,
+    isSuccess: isFound,
+  } = useMutation({
+    mutationFn: getSearchedMessage,
+  });
+  return { findMessage, isFindingMessage, isFound };
+};
+
+export default useSearchMessage;

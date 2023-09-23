@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { ROUTES } from "src/constants/navigation.constant";
 import { Link } from "react-router-dom";
 import Modal from "src/components/modal";
@@ -31,6 +32,7 @@ const Profile = ({
   gender: string;
   isUser: boolean;
 }) => {
+  const { t } = useTranslation("profile");
   return (
     <div className="h-[80vh] flex flex-col">
       {/* Bg img */}
@@ -74,7 +76,7 @@ const Profile = ({
               variation="neutral"
               disabled={isMutating}
             >
-              Send a message
+              {t("sendMessage")}
             </Button>
           )}
           {isSentRequest && (
@@ -83,7 +85,7 @@ const Profile = ({
               variation="neutral"
               disabled={isMutating}
             >
-              Cancel Request
+              {t("cancelRequest")}
             </Button>
           )}
           {!isFriend && !isSentRequest && (
@@ -91,7 +93,7 @@ const Profile = ({
               disabled={isMutating}
               onClick={() => onAddFriendRequest?.()}
             >
-              Add friend
+              {t("addFriend")}
             </Button>
           )}
         </div>
@@ -100,14 +102,14 @@ const Profile = ({
       <div className="px-4 pb-2 flex flex-col">
         <h3 className="mt-11 mb-5 text-2xl font-bold">{fullName}</h3>
         <div>
-          <h4 className="font-semibold mb-6">Personal information</h4>
+          <h4 className="font-semibold mb-6">{t("personalInformation")}</h4>
           <div className="flex flex-col gap-3 ">
             <div className="flex ">
               <p className="w-full max-w-[100px]">Email:</p>
               <p>{email}</p>
             </div>
             <div className="flex !m-0">
-              <p className="w-full max-w-[100px]"> Gender:</p>
+              <p className="w-full max-w-[100px]"> {t("gender")}:</p>
               <p>{gender}</p>
             </div>
           </div>
@@ -120,7 +122,7 @@ const Profile = ({
               className="p-3 rounded-md border border-[var(--color-grey-500)]"
               to={ROUTES.SETTINGS}
             >
-              Update your information
+              {t("updateInformation")}
             </Link>
           </Modal.Button>
         </div>

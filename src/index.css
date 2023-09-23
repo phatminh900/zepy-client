@@ -6,6 +6,7 @@
   --color-primary: #60a5fa;
   --color-primary-light: #e5efff;
   --color-primary-dark: #3b82f6;
+  --color-secondary: #2f9e44;
   --color-grey-text: #9ca3af;
   --color-grey-0: #f9fafb;
 
@@ -43,7 +44,7 @@
 }
 :root.dark-mode {
   --color-primary: #d946ef;
-  --color-primary-light: #e879f9;
+  --color-primary-light: #e599f7;
   --color-primary-dark: #c026d3;
   --color-grey-text: #cbd5e1;
   --color-grey-0: #020617;
@@ -80,6 +81,20 @@ body {
   height: 100vh;
   overflow: hidden;
 }
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-grey-400);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--color-grey-600);
+}
+
+/* Handle on hover */
+
 img {
   max-width: 100%;
 

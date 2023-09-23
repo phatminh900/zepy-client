@@ -2,7 +2,8 @@
 import { useContext, useEffect, createContext } from "react";
 import { LocalStorage } from "src/constants/browser.constant";
 import useLocalStorage from "src/hooks/useLocalStorage";
-
+import useSound from "src/hooks/useSound.hook";
+import themeSwitchAudio from "src/assets/mp3/lamp_switch.mp3";
 interface IThemeContext {
   isDarkMode: boolean;
   toggleDarkMode: () => void;
@@ -17,7 +18,11 @@ const ThemeContextProvider = ({ children }: Children) => {
     LocalStorage.isDarkMode,
     isUserDarkTheme
   );
-  const toggleDarkMode = () => setIsDarkMode((prev: boolean) => !prev);
+  const { play } = useSound(themeSwitchAudio);
+  const toggleDarkMode = () => {
+    setIsDarkMode((prev: boolean) => !prev);
+    play();
+  };
   useEffect(() => {
     const htmlEl = document.documentElement;
     if (isDarkMode) {

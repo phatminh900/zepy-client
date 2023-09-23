@@ -1,0 +1,27 @@
+{
+  "allFriend": "Tất cả bạn bè",
+  "joinedGroup": "Tất cả nhóm",
+  "friendRequests": "Tất cả lời mời kết bạn",
+  "friends": {
+    "friendList": "Danh sách bạn bè",
+    "contacts": "Liên hệ",
+    "addANewFriend": "Nhanh chóng thêm bạn mới nào 🥰",
+    "findFriend": "TÌm bạn ",
+    "name": "Tên"
+  },
+  "groups": {
+    "joinedGroup": "Danh sách nhóm đã gia nhập",
+
+    "groupList": "Danh sách nhóm",
+    "findFriend": "Tìm nhóm",
+    "name": "Tên",
+    "emptyGroups": "Bạn chưa có nhóm nào",
+
+    "groups": "Nhóm"
+  },
+  "requests": {
+    "friendRequests": "Tất cả lời mời kết bạn",
+    "emptyRequest": "Bạn không có lời mời nào",
+    "requests": "Lời mời"
+  }
+}

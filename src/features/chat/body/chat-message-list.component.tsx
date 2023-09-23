@@ -1,4 +1,5 @@
-import { memo, useMemo } from "react";
+import { useState, useRef, useEffect, memo, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useGetUser } from "src/hooks/useAuth";
 import MeMessage from "./me-message";
 import FriendMessage from "./friend-message.component";
@@ -6,6 +7,8 @@ import Menu from "src/components/menu";
 import { differenceInCalendarDays } from "date-fns";
 import { useGetMessages } from "src/features/chat/chat.hook";
 import useChatMessageList from "./chat-message-list.hook";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { PARAMS } from "src/constants/searchParams.constant";
 
 interface IMessageByDate {
   [date: string]: IMessage[];
@@ -22,9 +25,29 @@ const ChatMessageList = memo(function ChatMessageList() {
 });
 export default ChatMessageList;
 function MessageList({ children }: Children) {
+  const [initial, setInitial] = useState(true);
   const { newMessages, isTyping, user } = useChatMessageList();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const selectedMessageId = searchParams.get(PARAMS.selectMessageId);
+  console.log(selectedMessageId);
+  const listRef = useRef<HTMLDivElement | null>(null);
+  // scroll to selected message
+  useEffect(() => {
+    if (initial && selectedMessageId) {
+      setInitial(false);
+      // if already had selectedMessage reset it
+      navigate({ search: "" });
+      return;
+    }
+    const message = document.getElementById(selectedMessageId || "");
+    if (message) {
+      message.scrollIntoView();
+      message.style.backgroundColor = "var(--color-secondary)";
+    }
+  }, [initial, selectedMessageId, navigate]);
   return (
-    <div className="relative flex flex-col h-full">
+    <div className="relative flex flex-col h-full" ref={listRef}>
       <ul className=" h-full pb-2.5 flex flex-col">
         {children}
         {/* ONLY RE_RENDER NEWEST MESSAGE */}
@@ -34,7 +57,7 @@ function MessageList({ children }: Children) {
               Today
             </h2>
           )}
-          <ul className="flex flex-col gap-2">
+          <ul className="relative flex flex-col gap-2">
             {newMessages
               .slice(0, newMessages.length)
               .map((message) =>
@@ -48,11 +71,11 @@ function MessageList({ children }: Children) {
                 ) : (
                   <FriendMessage
                     id={message.id}
-                    email={message.author_profile!.email}
-                    fullName={message.author_profile!.fullname}
-                    gender={message.author_profile!.gender}
+                    email={message.author_profile!.email || ""}
+                    fullName={message.author_profile!.fullname || ""}
+                    gender={message.author_profile!.gender || ""}
                     createdAt={message.created_at}
-                    avatar={message.author_profile!.avatar}
+                    avatar={message.author_profile!.avatar || ""}
                     key={message.id}
                     message={message.message}
                   />
@@ -61,7 +84,7 @@ function MessageList({ children }: Children) {
           </ul>
         </div>
         {isTyping.isTyping && user!.id !== isTyping.userId && (
-          <p className="l-0 bottom-[-15px] text-sm text-[var(--color-primary)] mb-2 mt-auto">
+          <p className="l-0  bottom-[-15px] text-sm text-[var(--color-primary)] mb-2 mt-auto">
             {isTyping.fullName} is typing...
           </p>
         )}
@@ -70,6 +93,7 @@ function MessageList({ children }: Children) {
   );
 }
 function InitialChatMessage() {
+  const { t } = useTranslation("date");
   const { messages } = useGetMessages();
   const { user } = useGetUser();
   const messagesList: IMessageByDate | undefined = useMemo(() => {
@@ -79,16 +103,15 @@ function InitialChatMessage() {
         new Date(mes.created_at),
         new Date()
       );
-      if (daysDifferent === 0) date = "Today";
-      if (daysDifferent === -1) date = "Yesterday";
+      if (daysDifferent === 0) date = t("today");
+      if (daysDifferent === -1) date = t("yesterday");
       if (!acc[date]) {
         acc[date] = [];
       }
       acc[date].push(mes);
       return acc;
     }, {});
-  }, [messages]);
-
+  }, [messages, t]);
   if (!messages) return null;
   if (!messages?.length)
     return (

@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { BiSort } from "react-icons/bi";
 import { HiOutlineSearch } from "react-icons/hi";
 import Select from "src/components/select";
-import { PARAMS } from "src/constants/seachParams.constant";
+import { PARAMS } from "src/constants/searchParams.constant";
 import useSetSearchParams from "src/hooks/useSetSearchParams";
 
 const FriendActions = () => {
+  const { t } = useTranslation("contact");
   const { handleSetSearchParams } = useSetSearchParams();
   const [search, setSearch] = useState("");
   const handleChangeParams = (value: string) => {
@@ -26,7 +28,7 @@ const FriendActions = () => {
           value={search}
           onChange={(e) => handleSearch(e.target.value)}
           type="text"
-          placeholder="Find you friend"
+          placeholder={t("friends.findFriend")}
           className=" border-none bg-transparent"
         />
       </form>
@@ -34,11 +36,11 @@ const FriendActions = () => {
         onChange={handleChangeParams}
         className=" col-span-2 md:col-span-1"
         icon={<BiSort />}
-        defaultValue={{ label: "Name (A-Z)", value: "asc" }}
+        defaultValue={{ label: `${t("friends.name")} (A-Z)`, value: "asc" }}
       >
         <Select.Options>
-          <Select.Option value="asc">Name (A-Z)</Select.Option>
-          <Select.Option value="des">Name (Z-A)</Select.Option>
+          <Select.Option value="asc">{t("friends.name")} (A-Z)</Select.Option>
+          <Select.Option value="des">{t("friends.name")} (Z-A)</Select.Option>
         </Select.Options>
       </Select>
     </div>

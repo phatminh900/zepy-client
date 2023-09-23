@@ -1,0 +1,25 @@
+{
+  "allFriend": "All Friends",
+  "joinedGroup": "Joined Groups",
+  "friendRequests": "Friend Requests",
+  "friends": {
+    "friendList": "Friend List",
+    "contacts": "Contacts",
+    "addANewFriend": "Quickly add a new friend 🥰",
+    "findFriend": "Find your friend",
+    "name": "Name"
+  },
+  "groups": {
+    "joinedGroup": "Joined Groups",
+    "groupList": "Group List",
+    "findFriend": "Find your group",
+    "name": "Name",
+    "emptyGroups": "You have no groups",
+    "groups": "Groups"
+  },
+  "requests": {
+    "friendRequests": "Friend Requests",
+    "emptyRequest": "Your incoming request list is empty",
+    "requests": "Requests"
+  }
+}

@@ -1,11 +1,14 @@
-import { HiChevronDown } from "react-icons/hi";
+import { useTranslation } from "react-i18next";
+
 import Menu from "src/components/menu";
 import styles from "./chats-header.module.css";
-import { PARAMS } from "src/constants/seachParams.constant";
+import { PARAMS } from "src/constants/searchParams.constant";
 import useSetSearchParams from "src/hooks/useSetSearchParams";
 import { useSearchParams } from "react-router-dom";
 
 const ChatsHeader = () => {
+  const { t } = useTranslation("chats");
+
   const [searchParam] = useSearchParams();
   const { handleSetSearchParams } = useSetSearchParams();
   const handleUnread = () => {
@@ -30,7 +33,7 @@ const ChatsHeader = () => {
                 : ""
             }
           >
-            All
+            {t("all")}
           </button>
           <button
             onClick={handleUnread}
@@ -38,13 +41,13 @@ const ChatsHeader = () => {
               searchParam.get(PARAMS.unRead) === "true" ? styles.active : ""
             }
           >
-            UnRead
+            {t("unRead")}
           </button>
         </div>
         <div className="flex gap-2">
-          <button className="flex items-center gap-0.5">
+          {/* <button className="flex items-center gap-0.5">
             Filter <HiChevronDown />
-          </button>
+          </button> */}
           <Menu>
             <Menu.Toggle id="filter" />
             <Menu.List id="filter">

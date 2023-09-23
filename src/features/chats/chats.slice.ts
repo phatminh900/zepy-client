@@ -3,6 +3,7 @@ import { RealtimeChannel } from "@supabase/realtime-js";
 
 interface IChatStore {
   messages: IMessage[];
+  // unReadMessageCount
   channel: RealtimeChannel | null;
 }
 const initialState: IChatStore = {

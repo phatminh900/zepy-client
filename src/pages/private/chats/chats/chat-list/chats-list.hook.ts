@@ -1,18 +1,14 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
-import { QueryKey } from "src/constants/query-key.constant";
-import { PARAMS } from "src/constants/seachParams.constant";
+import { PARAMS } from "src/constants/searchParams.constant";
 import { useGetConversations } from "src/features/chat/chat.hook";
 import { useGetGroupConverSations } from "src/features/groups/groups.hook";
 import { useGetUser } from "src/hooks/useAuth";
-import { getAllMessages, getConversation } from "src/services/chats.service";
 
 const useChatListHook = () => {
   const { user } = useGetUser();
   const { conversations: data = [], isGettingConversations } =
     useGetConversations();
   const { conversation: groupConversations = [] } = useGetGroupConverSations();
-  const query = useQueryClient();
   const [searchParams] = useSearchParams();
   // change group conversation to exact shape with normal conversation
   const conversations = [

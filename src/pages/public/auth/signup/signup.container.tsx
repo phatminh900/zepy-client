@@ -4,6 +4,7 @@ import {
   HiOutlineUser,
 } from "react-icons/hi";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import validator from "validator";
 import FormInputRow from "../../../../components/form-input-row";
@@ -14,6 +15,7 @@ import useSignup from "./signup.hook";
 import { useGetUser } from "src/hooks/useAuth";
 
 const Signup = () => {
+  const { t } = useTranslation("signUp");
   const navigate = useNavigate();
   const { user } = useGetUser();
   const { signUp, isLoading } = useSignup();
@@ -30,7 +32,7 @@ const Signup = () => {
   }
   return (
     <form className="py-2 px-2  h-full flex flex-col" onSubmit={onSubmit}>
-      <h2 className="text-center text-lg mb-4">SignUp</h2>
+      <h2 className="text-center text-lg mb-4">{t("signUp")}</h2>
       <FormInputRow
         icon={<HiOutlineUser />}
         errMsg={fullName?.message as string}
@@ -43,7 +45,7 @@ const Signup = () => {
               message: "Your name must be at least 2 characters",
             },
           })}
-          placeHolder="Full Name"
+          placeHolder={t("fullName")}
         />
       </FormInputRow>
       <FormInputRow icon={<HiOutlineMail />} errMsg={email?.message as string}>
@@ -70,7 +72,7 @@ const Signup = () => {
             },
           })}
           type="password"
-          placeHolder="Your password"
+          placeHolder={t("password")}
         />
       </FormInputRow>
 
@@ -90,11 +92,11 @@ const Signup = () => {
               "Password and passwordConfirm didn't match",
           })}
           type="password"
-          placeHolder="Confirm password"
+          placeHolder={t("confirmPassword")}
         />
       </FormInputRow>
       <Button disabled={isLoading} className="mt-4">
-        {isLoading ? "Submitting..." : "Signup"}
+        {isLoading ? t("signingUp") : t("sign Up")}
       </Button>
       <Button
         type="button"
@@ -102,7 +104,7 @@ const Signup = () => {
         className="mt-auto italic text-sm"
         onClick={() => navigate(ROUTES.LOGIN)}
       >
-        Already have an account?
+        {t("hadAccount")}
       </Button>
     </form>
   );

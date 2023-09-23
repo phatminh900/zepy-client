@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { useGetAllFriends } from "src/features/contact/contact.hook";
 import { useGetUser } from "src/hooks/useAuth";
@@ -28,16 +28,17 @@ const useAddIntoGroup = () => {
   const [selectedFriend, setSelectedFriend] = useState<{ id: string }[]>([
     { id: user!.id },
   ]);
-  const handleAddFriend = (friendId: { id: string }) => {
+  const handleAddFriend = useCallback((friendId: { id: string }) => {
     setSelectedFriend((prev) =>
       prev.some((f) => f.id === friendId.id)
         ? prev.filter((f) => f.id !== friendId.id)
         : [...prev, friendId]
     );
-  };
+  }, []);
   const onSubmit = handleSubmit((data) => {
     if (!data.groupName.trim()) return;
     // if only author not have members
+    console.log(selectedFriend);
     if (selectedFriend.length === 1) {
       toast.error("A group must have at least 2 people");
       return;

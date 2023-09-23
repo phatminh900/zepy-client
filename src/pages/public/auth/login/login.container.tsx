@@ -1,6 +1,7 @@
 import { HiOutlineLockClosed, HiOutlineMail } from "react-icons/hi";
 import { useForm } from "react-hook-form";
 import { Navigate, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import validator from "validator";
 import Button from "src/components/button";
 import FormInputRow from "src/components/form-input-row";
@@ -10,6 +11,7 @@ import useLogin from "./login.hook";
 import { useGetUser } from "src/hooks/useAuth";
 
 const Login = () => {
+  const { t } = useTranslation("login");
   const navigate = useNavigate();
   const { user } = useGetUser();
   const { isLoading, login } = useLogin();
@@ -26,7 +28,7 @@ const Login = () => {
 
   return (
     <form className="py-2 px-2  h-full flex flex-col" onSubmit={onSubmit}>
-      <h2 className="text-center text-lg mb-4">Login</h2>
+      <h2 className="text-center text-lg mb-4">{t("login")}</h2>
       <FormInputRow icon={<HiOutlineMail />} errMsg={email?.message as string}>
         <Input
           {...register("email", {
@@ -34,7 +36,7 @@ const Login = () => {
             validate: (val) =>
               validator.isEmail(val) || "Please provide a valid email",
           })}
-          placeHolder="Email"
+          placeHolder={t("email")}
           type="email"
         />
       </FormInputRow>
@@ -50,13 +52,13 @@ const Login = () => {
               message: "Password must be at least 6 characters",
             },
           })}
-          placeHolder="Password"
+          placeHolder={t("password")}
           type="password"
         />
       </FormInputRow>
 
       <Button disabled={isLoading} className="mt-4">
-        {isLoading ? "Logging in" : "Log in"}
+        {isLoading ? t("loggingIn") : t("logIn")}
       </Button>
       <Button
         type="button"
@@ -64,7 +66,7 @@ const Login = () => {
         className="mt-auto"
         onClick={() => navigate(ROUTES.SIGNUP)}
       >
-        Not have an account yet?
+        {t("hadAccount")}
       </Button>
     </form>
   );

@@ -1,0 +1,11 @@
+{
+  "profile": "Hồ sơ",
+  "personalInformation": "Hồ sơ cá nhân",
+  "gender": "Giới tính",
+  "male": "Nam",
+  "female": "Nữ",
+  "updateInformation": "Cập nhật thông tin cá nhân của bạn",
+  "sendMessage": "Gửi tin nhắn",
+  "cancelRequest": "Hủy yêu cầu",
+  "addFriend": "Kết bạn"
+}

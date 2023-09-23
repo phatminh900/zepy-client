@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { useState, createContext, useContext } from "react";
+import { useEffect, useState, useRef, createContext, useContext } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { createPortal } from "react-dom";
@@ -59,10 +59,13 @@ const Toggle = ({
   placeMenuPosition?: (e: React.MouseEvent) => { top: number; right: number };
   children?: React.ReactNode;
 }) => {
+  const buttonRef = useRef<HTMLButtonElement | null>(null);
   const { openId, open, close, handleSetListPosition } = useMenuContext();
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     e.preventDefault();
+    // add visibility
+
     openId && openId === id ? close() : open(id);
     // default no place list position
     if (!placeMenuPosition) {
@@ -81,8 +84,14 @@ const Toggle = ({
       right,
     });
   };
+  useEffect(() => {
+    if (!buttonRef.current) return;
+    openId
+      ? (buttonRef.current!.style.color = "var(--color-primary)")
+      : (buttonRef.current!.style.color = "inherit");
+  }, [openId]);
   return (
-    <button onClick={handleClick}>
+    <button onClick={handleClick} ref={buttonRef}>
       {!children ? <HiDotsHorizontal /> : children}
     </button>
   );
@@ -132,6 +141,7 @@ const Option = ({
     e.stopPropagation();
     close();
     onClick();
+    console.log(e);
   };
   return (
     <li>

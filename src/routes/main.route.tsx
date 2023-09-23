@@ -15,10 +15,13 @@ import {
   Settings,
   Search,
   GroupChat,
+  Call,
+  Todos,
+  TodoTasks,
 } from "../pages";
 import Loader from "src/ui/Loader";
 import AppLayout from "src/ui/app-layout";
-import ProtectRoute from "./auth.route";
+import ProtectRoute from "./auth/auth.route";
 
 const Main = () => {
   return (
@@ -60,9 +63,15 @@ const Main = () => {
               />
               {/* <Route path={ROUTES.FRIENDS} element={<Friends />} /> */}
             </Route>
+            <Route path={ROUTES.TODOS} element={<Todos />}>
+              <Route index element={<p>Hello</p>} />
+              <Route path=":id" element={<TodoTasks />} />
+            </Route>
             {/* settings */}
             <Route path={ROUTES.SETTINGS} element={<Settings />} />
+            {/* Call */}
           </Route>
+          <Route path={ROUTES.CALL} element={<Call />} />
         </Routes>
       </React.Suspense>
     </BrowserRouter>

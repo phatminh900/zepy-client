@@ -14,12 +14,9 @@ const ChatActions = ({
   return (
     <div
       className={`${styles.actions} ${
-        position === "left" ? "-left-[70px]" : "left-[110%]"
+        position === "left" ? "-left-[30px]" : "left-[104%]"
       } -1/2 `}
     >
-      <button>
-        <RiDoubleQuotesR />
-      </button>
       <Menu.Toggle id={id}>
         <HiDotsHorizontal />
       </Menu.Toggle>

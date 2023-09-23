@@ -1,0 +1,20 @@
+{
+  "common": {
+    "signUp": "signUp",
+    "language": "Language",
+    "email": "Email",
+    "password": "Password"
+  },
+  "action": {
+    "save": "Save",
+    "login": "Login"
+  },
+  "product": {
+    "title": " Page title",
+    "name": "Product Name"
+  },
+  "navBar": {
+    "product": "Product",
+    "dashboard": "Dashboard"
+  }
+}

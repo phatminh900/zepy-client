@@ -49,7 +49,7 @@ export const logOut = async () => {
 
 export const getUser = async () => {
   const session = await supabase.auth.getSession();
-  if (!session) return null;
+  if (!session.data.session) return null;
   const { data: user } = await supabase
     .from("profile")
     .select("*")
