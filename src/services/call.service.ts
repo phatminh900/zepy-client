@@ -37,6 +37,23 @@ export const createNewCall = async (userId: string, userReceiveId: string) => {
   }
   return data as { id: string; user_id: string; user_receive_id: string };
 };
+export const updateUserCallingSocketId = async (
+  userId: string,
+  userSocketId: string
+) => {
+  const { data, error } = await supabase
+    .from("call")
+    .update({ user_call_socketId: userSocketId })
+    .eq("user_id", userId)
+    .select("*")
+    .single();
+
+  if (error) {
+    console.error(error);
+    throwError(error, error.message);
+  }
+  return data as { id: string; user_id: string; user_call_socketId: string };
+};
 export const getCall = async (callId: string) => {
   const { data, error } = await supabase
     .from("call")
@@ -81,8 +98,6 @@ export const updateCallParticipantSocketId = async ({
   userId: string;
   socketId: string;
 }) => {
-  console.log("where???");
-  console.log(callId, userId, socketId);
   const { data, error } = await supabase
     .from("call_participant")
     .update({ socket_id: socketId })

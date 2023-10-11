@@ -1,17 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import { QueryKey } from "src/constants/query-key.constant";
 import { useGetUser } from "src/hooks/useAuth";
 import {
   createANewList as createANewListApi,
   getLists,
+  getList,
   deleteList as deleteAListApi,
   createANewTask as createANewTaskApi,
   toggleCompletedTask as toggleCompletedTaskApi,
+  updateTaskTitle as updateTaskTitleApi,
   deleteATask as deleteATaskApi,
-  setDeadlineTask as setDeadlineTaskApi,
   getTasks,
+  modifyList,
 } from "src/services/todos.service";
 export const useTodoLists = () => {
   const { user } = useGetUser();
@@ -27,6 +28,13 @@ export const useTodoLists = () => {
       },
     }
   );
+  const { mutate: modifyListName, isLoading: isModifyingListName } =
+    useMutation({
+      mutationFn: modifyList,
+      onSuccess: () => {
+        query.invalidateQueries([QueryKey.TODO_LISTS]);
+      },
+    });
   const { mutate: deleteAList, isLoading: isDeletingAList } = useMutation({
     mutationFn: deleteAListApi,
     onSuccess: () => {
@@ -39,14 +47,29 @@ export const useTodoLists = () => {
     queryFn: () => getLists({ userId: user!.id }),
     queryKey: [QueryKey.TODO_LISTS],
   });
+  const { id } = useParams();
+  const {
+    data: todoList,
+    isLoading: isGettingTodoList,
+    refetch: getTodoList,
+  } = useQuery({
+    queryFn: () => getList({ listId: id! }),
+    queryKey: [QueryKey.TODO_LIST],
+    enabled: false,
+  });
 
   return {
     createANewList,
     isCreatingANewList,
+    todoList,
+    isGettingTodoList,
     todoLists,
     isGettingTodoLists,
     deleteAList,
+    getTodoList,
     isDeletingAList,
+    modifyListName,
+    isModifyingListName,
   };
 };
 export const useTodoTasks = () => {
@@ -75,11 +98,13 @@ export const useTodoTasks = () => {
       query.invalidateQueries([QueryKey.TODO_TASKS, id]);
     },
   });
-  const { mutate: setDeadlineTask, isLoading: isSetDeadlineTask } = useMutation(
-    {
-      mutationFn: setDeadlineTaskApi,
-    }
-  );
+  const { mutate: updateTaskTitle, isLoading: isUpdatingTaskTitle } =
+    useMutation({
+      mutationFn: updateTaskTitleApi,
+      onSuccess: () => {
+        query.invalidateQueries([QueryKey.TODO_TASKS]);
+      },
+    });
   // query
   const { data: tasks, isLoading: isGettingTasks } = useQuery({
     queryFn: () => getTasks({ listId: id! }),
@@ -93,8 +118,9 @@ export const useTodoTasks = () => {
     isToggingCompletedTask,
     deleteATask,
     isDeleteATask,
-    setDeadlineTask,
-    isSetDeadlineTask,
+    updateTaskTitle,
+    isUpdatingTaskTitle,
+
     tasks,
     isGettingTasks,
   };

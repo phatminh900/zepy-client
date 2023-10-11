@@ -1,15 +1,12 @@
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
-import styles from "./todos-sidebar.module.css";
-import TodoSideBarForm from "./todo-sidebar-form.component";
+import TodoSideBarForm from "./todo-list-form.component";
 import TodoList from "./todo-list.component";
 const TodosSideBar = () => {
-  const { t } = useTranslation("contact");
-  const { pathname } = useLocation();
+  const { t } = useTranslation("todos");
   return (
     <div className="flex-1 flex flex-col">
       <h3 className="pl-[var(--gutter-left-component)] text-xl font-bold my-4">
-        All your lists
+        {t("list.title")}
       </h3>
       <div className="flex flex-col flex-1">
         <TodoList />

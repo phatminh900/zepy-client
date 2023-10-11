@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { DayPicker } from "react-day-picker";
 import Button from "src/components/button";
 import InputRadio from "src/components/input-radio";
 import RowLayout from "../row-layout.component";
@@ -18,9 +17,6 @@ const PersonalSettings = () => {
   const [fullName, setFullName] = useState(user!.fullname);
   const [gender, setGender] = useState(user!.gender);
 
-  const [isOpenDayPicker, setIsOpenDayPicker] = useState(false);
-  const open = () => setIsOpenDayPicker(true);
-  const close = () => setIsOpenDayPicker(false);
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // equal the same old result
@@ -66,12 +62,12 @@ const PersonalSettings = () => {
               <InputRadio
                 name="gender"
                 id="male"
-                onChange={(e) => setGender("male")}
+                onChange={() => setGender("male")}
                 checked={gender === "male"}
                 label={t("male")}
               />
               <InputRadio
-                onChange={(e) => setGender("female")}
+                onChange={() => setGender("female")}
                 name="gender "
                 checked={gender === "female"}
                 id="female"
@@ -79,9 +75,7 @@ const PersonalSettings = () => {
               />
             </div>
           </RowLayout>
-          <RowLayout title="BirthDay">
-            <p>BirthDay</p>
-          </RowLayout>
+
           <Button variation="primary" className=" p-3">
             {isUpdatingGender || isUpdatingName ? t("updating") : t("update")}
           </Button>

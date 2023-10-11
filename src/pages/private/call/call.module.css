@@ -4,23 +4,39 @@
     fill-mode;
   animation: call_animation 0.6s ease-in infinite;
 }
-@keyframes call_animation {
-  0% {
-    rotate: -20deg;
-  }
-  20% {
-    rotate: -5deg;
-  }
-  40% {
-    rotate: 0deg;
-  }
-  60% {
-    rotate: 20deg;
-  }
-  80% {
-    rotate: 5deg;
-  }
-  100% {
-    rotate: 0deg;
-  }
+.circle {
+  width: 55px;
+  height: 55px;
+  background-color: var(--color-grey-500);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  border-radius: 50%;
+  position: relative;
+  overflow: hidden;
+}
+.smallCircle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  transform-origin: right center;
+  height: 100%;
+}
+.smallCircle1 {
+  z-index: 2;
+  background-color: var(--color-primary);
+  transition: all 5s linear;
+}
+.smallCircle2 {
+  z-index: 3;
+  background-color: var(--color-primary);
+  transition: all 10s linear;
+}
+.smallCircle3 {
+  z-index: 4;
+  background-color: var(--color-grey-500);
+
+  opacity: 1;
 }

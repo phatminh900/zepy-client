@@ -30,7 +30,6 @@ function MessageList({ children }: Children) {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const selectedMessageId = searchParams.get(PARAMS.selectMessageId);
-  console.log(selectedMessageId);
   const listRef = useRef<HTMLDivElement | null>(null);
   // scroll to selected message
   useEffect(() => {

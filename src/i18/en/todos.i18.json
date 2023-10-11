@@ -1,0 +1,14 @@
+{
+  "list": {
+    "title": "All your list",
+    "emptyList": "Quickly add a new list",
+    "addAList": "Add a new list"
+  },
+  "task": {
+    "emptyList": "Quickly add a new task",
+    "addAList": "Add a new task",
+    "unCompleted": "Uncompleted",
+    "completed": "Completed",
+    "created": "Created from"
+  }
+}

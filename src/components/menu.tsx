@@ -141,7 +141,6 @@ const Option = ({
     e.stopPropagation();
     close();
     onClick();
-    console.log(e);
   };
   return (
     <li>

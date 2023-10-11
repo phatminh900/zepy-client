@@ -13,7 +13,6 @@ const GroupList = ({ groups }: { groups: IGroupListProps[] }) => {
     (list: { [key: string]: IGroupListProps[] }, group) => {
       // if search friend is triggered
       const searchKeyword = searchParams.get(PARAMS.groupName);
-      console.log(searchKeyword);
       const firstLetter = group.group.name[0].toLowerCase();
       if (!list[firstLetter]) {
         list[firstLetter] = [];

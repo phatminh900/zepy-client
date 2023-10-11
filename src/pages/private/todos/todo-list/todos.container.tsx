@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import useOpenTableMobile from "src/hooks/useOpenTab-mobile.hook";
 import MainColumn from "src/ui/main-column/main-column.component";
-import TodosSideBar from "./todos-sidebar/todos-sidebar.component";
+import TodosSideBar from "./todos-sidebar/todo-lists.compoent";
 
 const Todos = () => {
   const { isMoBile, isOpenTab } = useOpenTableMobile();

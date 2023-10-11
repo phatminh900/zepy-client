@@ -8,7 +8,6 @@ export const updateImg = async (userId: string, field: string, img: any) => {
   const avatarPath = `${supabaseUrl}/storage/v1/object/public/${field}/${avatarName}`;
   const { error } = await supabase.storage.from(field).upload(avatarName, img);
   if (error) {
-    console.log(error);
     throw new Error("There were some problems try again later.");
   }
   return avatarPath;

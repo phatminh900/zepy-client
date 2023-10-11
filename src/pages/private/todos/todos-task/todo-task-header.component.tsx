@@ -1,10 +1,15 @@
-import { Avatar } from "antd";
+import { useTranslation } from "react-i18next";
+import Avatar from "src/components/avatar";
 import ReturnButtonTitle from "src/components/return-button-title";
+import { useTodoLists } from "src/features/todos/todos.hook";
 import useOpenTableMobile from "src/hooks/useOpenTab-mobile.hook";
 import { formatDate } from "src/utils/format-time";
 
-const TodoTaskHeader = ({ title }: { title: string }) => {
+const TodoTaskHeader = () => {
+  const { t } = useTranslation("todos");
   const { isMoBile } = useOpenTableMobile();
+  const { todoList } = useTodoLists();
+
   const AvatarBox = (
     <div className="relative">
       <Avatar size="large" src={"/imgs/todo-avatar.jpg"} />
@@ -23,10 +28,11 @@ const TodoTaskHeader = ({ title }: { title: string }) => {
             <h4
               className={`${false} text-xs whitespace-nowrap    md:text-sm lg:text-lg text-[var(--color-grey-800)]`}
             >
-              {title}
+              {todoList?.title}
             </h4>
             <p className="text-xs text-[var(--color-grey-400)]">
-              Created from {formatDate(new Date())}
+              {t("task.created")}
+              {formatDate(new Date(todoList!.created_at))}
             </p>
           </div>
         </div>

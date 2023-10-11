@@ -55,9 +55,9 @@ const Conversation = ({
         <div className="pr-2 md:pr-4 pl-2.5 md:pl-[var(--gutter-left-component)] py-[var(--gutter-left-component)] w-full flex gap-3">
           <Avatar size="large" src={avatar} />
           <div className="flex-1 ">
-            <div className="flex justify-between">
+            <div className="flex justify-between items-center">
               <h4
-                className={`text-base md:text-lg text-[var(--color-grey-800)] ${
+                className={`text-sm max-w-[150px] overflow-hidden text-ellipsis whitespace-nowrap md:text-lg text-[var(--color-grey-800)] ${
                   !isRead && "font-semibold"
                 }`}
               >

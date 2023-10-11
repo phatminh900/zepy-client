@@ -35,7 +35,6 @@ const SearchMessage = ({ onClose }: { onClose: () => void }) => {
   const handleSelectedMessage = (id: string) => {
     navigate({ search: `${PARAMS.selectMessageId}=${id}` });
   };
-  console.log(searchedMessage);
   useEffect(() => {
     inputRef.current?.focus();
   }, []);

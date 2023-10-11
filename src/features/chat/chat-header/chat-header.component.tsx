@@ -1,7 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import Avatar from "src/components/avatar";
 import {
-  HiOutlineInbox,
   HiOutlineSearch,
   HiOutlineUserGroup,
   HiOutlineVideoCamera,
@@ -42,9 +41,11 @@ const ChatHeader = ({
   const { callOther } = useCallContext();
   const { id } = useParams();
   const { isMoBile } = useOpenTableMobile();
+
   const AvatarStatus = (
     <div className="relative">
       <Avatar size="large" src={avatar} />
+
       {onlineStatus && onlineStatus === "Online" && <OnlineStatus />}
     </div>
   );

@@ -54,7 +54,7 @@ const Greeting = () => {
 
 export default Greeting;
 
-function SliderActions({
+export function SliderActions({
   onGotoPrev,
   onGotoNextSlide,
   onGotoSlide,
@@ -70,12 +70,14 @@ function SliderActions({
   return (
     <>
       <button
+        data-testid="btn-prev-slide"
         onClick={onGotoPrev}
         className="text-5xl absolute top-1/2 left-[-10%] translate-x-1/2"
       >
         <HiChevronLeft className="text-[var(--color-grey-400)] hover:text-[var(--color-grey-500)] duration-200]" />
       </button>
       <button
+        data-testid="btn-next-slide"
         className="text-5xl absolute  top-1/2 translate-x-1/2 right-0"
         onClick={onGotoNextSlide}
       >

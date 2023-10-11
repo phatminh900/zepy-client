@@ -1,4 +1,3 @@
-// TODO: separate into individual hook
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { QueryKey } from "src/constants/query-key.constant";
 import { useGetUser } from "src/hooks/useAuth";

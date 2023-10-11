@@ -18,6 +18,7 @@ import {
   Call,
   Todos,
   TodoTasks,
+  TodoGreeting,
 } from "../pages";
 import Loader from "src/ui/Loader";
 import AppLayout from "src/ui/app-layout";
@@ -64,7 +65,7 @@ const Main = () => {
               {/* <Route path={ROUTES.FRIENDS} element={<Friends />} /> */}
             </Route>
             <Route path={ROUTES.TODOS} element={<Todos />}>
-              <Route index element={<p>Hello</p>} />
+              <Route index element={<TodoGreeting />} />
               <Route path=":id" element={<TodoTasks />} />
             </Route>
             {/* settings */}

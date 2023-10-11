@@ -20,7 +20,12 @@ const DateCalculator = ({
   const days = requestedDays(time);
   const seconds = requestedSeconds(time);
   return (
-    <span className={twMerge(" text-[10px] md:text-xs italic flex", className)}>
+    <span
+      className={twMerge(
+        " text-[8px] whitespace-nowrap md:text-xs italic flex",
+        className
+      )}
+    >
       {mins > 59 &&
         mins < 1439 &&
         `${hours} ${hours === 1 ? t("hour") : t("hours")} ${t("ago")}`}

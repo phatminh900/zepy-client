@@ -7,6 +7,7 @@ import {
   createNewCallParticipant,
   getCall as getCallApi,
   getUserSocketId as getUserSocketIdApi,
+  updateUserCallingSocketId,
 } from "src/services/call.service";
 
 export const useCreateCall = () => {
@@ -24,6 +25,19 @@ export const useCreateCall = () => {
     }) => createNewCall(userId, userReceiveId),
   });
   return { createAnewCall, isCreatingANewCall, isCreatedANewCall };
+};
+export const useUpdateUserCallingSocketId = () => {
+  const { mutateAsync: updateUserSocketId, isLoading: isUpdatingUserSocketId } =
+    useMutation({
+      mutationFn: ({
+        userId,
+        userSocketId,
+      }: {
+        userId: string;
+        userSocketId: string;
+      }) => updateUserCallingSocketId(userId, userSocketId),
+    });
+  return { updateUserSocketId, isUpdatingUserSocketId };
 };
 export const useCreateParticipant = () => {
   const { mutateAsync: createParticipant, isLoading: isCreatingParticipant } =

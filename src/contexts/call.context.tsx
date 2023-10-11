@@ -23,7 +23,6 @@ interface ICallContext {
     roomId: string;
   }) => void;
   answerCall: ({ userId, callId }: { userId: string; callId: string }) => void;
-  rejectCall: () => void;
 }
 export const CallCtx = createContext<ICallContext | null>(null);
 const CallContextProvider = ({ children }: { children: React.ReactNode }) => {
@@ -54,9 +53,7 @@ const CallContextProvider = ({ children }: { children: React.ReactNode }) => {
     },
     []
   );
-  const rejectCall = useCallback(() => {
-    console.log("implement later");
-  }, []);
+
   // receive call
   useEffect(() => {
     socket.on(
@@ -73,7 +70,7 @@ const CallContextProvider = ({ children }: { children: React.ReactNode }) => {
     );
   }, []);
   return (
-    <CallCtx.Provider value={{ callOther, answerCall, rejectCall }}>
+    <CallCtx.Provider value={{ callOther, answerCall }}>
       {children}
     </CallCtx.Provider>
   );

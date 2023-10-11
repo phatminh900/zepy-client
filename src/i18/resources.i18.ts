@@ -10,6 +10,8 @@ import sidebarEn from "./en/sidebar.i18.json";
 import sidebarVi from "./vi/sidebar.i18.json";
 import addContactsVi from "./vi/new-friend-group.i18.json";
 import dateEn from "./en/date.i18.json";
+import todosEn from "./en/todos.i18.json";
+import todosVi from "./vi/todos.i18.json";
 import dateVi from "./vi/date.i18.json";
 import chatsVi from "./vi/chats.i18.json";
 import profileVi from "./vi/profile.i18.json";
@@ -30,6 +32,7 @@ export const resources = {
     addContacts: addContactsEn,
     sidebar: sidebarEn,
     date: dateEn,
+    todos: todosEn,
   },
   vi: {
     signUp: signUpVi,
@@ -42,5 +45,6 @@ export const resources = {
     addContacts: addContactsVi,
     sidebar: sidebarVi,
     date: dateVi,
+    todos: todosVi,
   },
 };

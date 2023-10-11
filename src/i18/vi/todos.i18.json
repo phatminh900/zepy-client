@@ -1,0 +1,14 @@
+{
+  "list": {
+    "title": "Tất cả danh sách",
+    "emptyList": "Nhanh chóng thêm 1 danh sách mới",
+    "addAList": "Thêm 1 danh sách mới"
+  },
+  "task": {
+    "emptyList": "Nhanh chóng thêm 1 nhiệm vụ mới",
+    "addAList": "Thêm 1 nhiệm vụ mới",
+    "unCompleted": "Chưa hoàn thành",
+    "completed": "Đã hoàn thành",
+    "created": "Tạo từ"
+  }
+}

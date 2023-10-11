@@ -1,7 +1,10 @@
 import { ISlide } from "./slider";
 const Slide = ({ title, height = 100, width = 100, text, imgSrc }: ISlide) => {
   return (
-    <li className="absolute w-full h-full md:h-3/5 lg:h-[70%] duration-1000 transition-all">
+    <li
+      data-testid="slide"
+      className="absolute w-full h-full md:h-3/5 lg:h-[70%] duration-1000 transition-all"
+    >
       <div className="w-full h-full">
         <img
           src={imgSrc}

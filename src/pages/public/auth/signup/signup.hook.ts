@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "src/constants/navigation.constant";
 import { signUp as signUpApi } from "src/services/auth.service";
-import { createANewList } from "src/services/todos.service";
 const useSignup = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -17,18 +16,13 @@ const useSignup = () => {
   } = useMutation({
     mutationFn: ({ email, password, fullName }: ISignup) =>
       signUpApi({ email, password, fullName }),
-    onSuccess: async (data) => {
+    onSuccess: async () => {
       toast.success(t("successSign"));
       // after sign up create a my day default list
 
       setTimeout(() => {
         navigate(ROUTES.LOGIN);
       }, 1000);
-      await createANewList({
-        title: "MY day",
-        userId: data.user!.id,
-        defaultType: true,
-      });
     },
     onError: (err: AuthError) => {
       toast.error(err.message);

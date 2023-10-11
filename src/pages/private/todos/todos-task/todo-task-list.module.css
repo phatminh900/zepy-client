@@ -1,0 +1,25 @@
+.list li {
+  transform-origin: top;
+  animation: openItem 0.2s;
+}
+
+.icon.active svg {
+  transform: rotate(90deg);
+}
+.icon svg {
+  transition: all 0.5s;
+}
+@keyframes openItem {
+  0% {
+    scale: 1 0;
+  }
+  50% {
+    scale: 1 0.5;
+  }
+  70% {
+    scale: 1 0.8;
+  }
+  100% {
+    scale: 1 1;
+  }
+}

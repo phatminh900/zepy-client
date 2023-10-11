@@ -17,7 +17,6 @@ const ChatLists = () => {
     );
   return (
     <ul>
-      {/* TODO: */}
       <Menu>
         {filteredConversation?.map((conversation) => (
           <Conversation

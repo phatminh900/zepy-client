@@ -1,4 +1,3 @@
-// TODO: EXTRACT ALL LOGIN IN PAGE INTO ITS OWN HOOK
 import Avatar from "src/components/avatar";
 import Modal from "src/components/modal";
 import Profile from "src/components/profile";

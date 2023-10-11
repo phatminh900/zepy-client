@@ -5,13 +5,19 @@ import endCallSound from "src/assets/mp3/end-call-sound.mp3";
 import callingSound from "src/assets/mp3/calling.mp3";
 import incomingSound from "src/assets/mp3/incoming-call.mp3";
 import enterCallSound from "src/assets/mp3/door_bell.wav";
-import { useGetCall } from "src/features/call/call.hook";
+import {
+  useGetCall,
+  useUpdateUserCallingSocketId,
+} from "src/features/call/call.hook";
 import { useGetUser } from "src/hooks/useAuth";
 import { socket } from "src/contexts/call.context";
 import useSound from "src/hooks/useSound.hook";
 
 const useCallHook = (callId: string) => {
+  const TIME_OUT = 30000;
+  const [isNotAnswer, setIsNotAnswer] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
+  const [isRejected, setIsRejected] = useState(false);
   const [userState, setUserState] = useState({
     device: {
       audio: true,
@@ -34,20 +40,26 @@ const useCallHook = (callId: string) => {
   const { play: playIncomingSound, stop: stopIncomingSound } =
     useSound(incomingSound);
   const [isEnd, setIsEnd] = useState(false);
+  const { updateUserSocketId } = useUpdateUserCallingSocketId();
   const [_, setParticipants] = useState<string[]>([]);
   const peerConnections = useRef<{ [key: string]: RTCPeerConnection }>({});
   const localMediaStream = useRef<MediaStream | null>(null);
   const remoteMediaStream = useRef<MediaStream | null>(null);
   const userLocalVideo = useRef<HTMLVideoElement | null>(null);
   const userRemoteVideo = useRef<HTMLVideoElement | null>(null);
-
+  const avatarBoxRef = useRef<HTMLDivElement>(null);
   const { callData } = useGetCall({ callId });
   const { user, refetch } = useGetUser();
+
   const answerCall = () => {
     socket.emit("join_call", { callId: callData?.id });
   };
   const leaveCall = () => {
     socket.emit("leave_call");
+    window.close();
+  };
+  const rejectCall = () => {
+    socket.emit("reject_call", { userCallId: callData?.user_id });
     window.close();
   };
   const toggleMedia = (type: "video" | "audio") => {
@@ -237,6 +249,17 @@ const useCallHook = (callId: string) => {
       socket.on("remove_participant", removeParticipant);
     };
   }, [user?.id]);
+  useEffect(() => {
+    if (user?.id) {
+      socket.on("reject_call", () => {
+        setIsRejected(true);
+        const timer = setTimeout(() => {
+          window.close();
+        }, 5000);
+        return () => clearTimeout(timer);
+      });
+    }
+  }, [user?.id]);
   // toggle media
   useEffect(() => {
     if (!user?.id) return;
@@ -253,10 +276,27 @@ const useCallHook = (callId: string) => {
   useEffect(() => {
     if (user?.id === callData?.user_id && !isConnected) {
       playCallingSound();
+      if (!isConnected) {
+        const timer1 = setTimeout(() => {
+          setIsNotAnswer(true);
+        }, TIME_OUT);
+        const timer2 = setTimeout(() => {
+          window.close();
+        }, TIME_OUT + 5000);
+        return () => {
+          clearTimeout(timer1);
+          clearTimeout(timer2);
+        };
+      }
     }
-    return () => {
+    // not answer
+
+    if (isConnected) {
       stopCallingSound();
-    };
+      return () => {
+        stopCallingSound();
+      };
+    }
   }, [
     user?.id,
     isConnected,
@@ -278,6 +318,13 @@ const useCallHook = (callId: string) => {
     playIncomingSound,
     stopIncomingSound,
   ]);
+  //  set user calling socketit
+  useEffect(() => {
+    if (user?.id && user.id === callData?.user_id) {
+      updateUserSocketId({ userId: user.id, userSocketId: socket.id });
+    }
+  }, [user?.id, updateUserSocketId, callData?.user_id]);
+
   useEffect(() => {
     if (isConnected) {
       playEnterSound();
@@ -299,12 +346,16 @@ const useCallHook = (callId: string) => {
     callData,
     isConnected,
     userLocalVideo,
+    isNotAnswer,
     userState,
     toggleMedia,
+    rejectCall,
     userRemoteVideo,
     remoteMediaStream,
+    avatarBoxRef,
     leaveCall,
     remoteState,
+    isRejected,
     answerCall,
   };
 };

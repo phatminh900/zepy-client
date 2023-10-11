@@ -11,6 +11,17 @@ export const getLists = async ({ userId }: { userId: string }) => {
   }
   return data as ITodoList[];
 };
+export const getList = async ({ listId }: { listId: string }) => {
+  const { data, error } = await supabase
+    .from("todo_list")
+    .select("*")
+    .eq("id", listId)
+    .single();
+  if (error) {
+    throwError(error, error?.message);
+  }
+  return data as ITodoList;
+};
 export const createANewList = async ({
   title,
   defaultType = false,
@@ -34,6 +45,24 @@ export const deleteList = async ({ id }: { id: string }) => {
   const { data, error } = await supabase
     .from("todo_list")
     .delete()
+    .eq("id", id);
+  if (error) {
+    throwError(error, error?.message);
+  }
+  return data;
+};
+export const modifyList = async ({
+  id,
+  field,
+  value,
+}: {
+  field: string;
+  value: string;
+  id: string;
+}) => {
+  const { data, error } = await supabase
+    .from("todo_list")
+    .update({ [field]: value })
     .eq("id", id);
   if (error) {
     throwError(error, error?.message);
@@ -103,16 +132,17 @@ export const toggleCompletedTask = async ({
   }
   return data as ITodoTask;
 };
-export const setDeadlineTask = async ({
+
+export const updateTaskTitle = async ({
   id,
-  deadline,
+  title,
 }: {
   id: string;
-  deadline: boolean;
+  title: string;
 }) => {
   const { data, error } = await supabase
     .from("todo_task")
-    .update({ deadline })
+    .update({ title })
     .eq("id", id)
     .select("*")
     .single();

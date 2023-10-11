@@ -1,3 +1,4 @@
+import { twMerge } from "tailwind-merge";
 import { BsCameraVideo, BsCameraVideoOff } from "react-icons/bs";
 import { useParams } from "react-router-dom";
 import { BiSolidMicrophone, BiSolidMicrophoneOff } from "react-icons/bi";
@@ -13,10 +14,14 @@ const Call = () => {
   const {
     isEnd,
     isConnected,
+    rejectCall,
     userLocalVideo,
     userRemoteVideo,
+    isNotAnswer,
     callData,
+    isRejected,
     answerCall,
+    avatarBoxRef,
     toggleMedia,
     remoteState,
     leaveCall,
@@ -49,7 +54,7 @@ const Call = () => {
               : "block",
         }}
       />
-      {!userState.device.video && (
+      {!userState.device.video && isConnected && (
         <div className="flex relative w-[200px] h-[200px] border border-white ">
           <div
             style={{
@@ -145,20 +150,38 @@ const Call = () => {
     </div>
   );
   if (!callData?.user_id) return null;
+  if (isRejected)
+    return (
+      <div className="flex justify-center items-center">
+        <p className="text-3xl">Your friend rejected your call.</p>
+      </div>
+    );
   return (
     <div className="h-screen relative">
       {!isEnd ? (
         <>
           {!isConnected && (
             <div className="absolute left-1/2 top-1/2 whitespace-nowrap  -translate-x-1/2 -translate-y-1/2 flex flex-col gap-3 items-center color-[var(--color-grey-800)] z-[9999]">
-              <Avatar
-                size="large"
-                src={
-                  user.id === callData?.user_id
-                    ? callData.user_receive_profile.avatar
-                    : callData?.user_call_profile.avatar
-                }
-              />
+              {/* Avatar */}
+              <div ref={avatarBoxRef} className={`${styles.circle} `}>
+                <div
+                  className={`${styles.smallCircle} ${styles.smallCircle1}`}
+                ></div>
+                <div
+                  className={`${styles.smallCircle} ${styles.smallCircle2}`}
+                ></div>
+                <div
+                  className={`${styles.smallCircle} ${styles.smallCircle3}`}
+                ></div>
+                <Avatar
+                  size="large"
+                  src={
+                    user.id === callData?.user_id
+                      ? callData.user_receive_profile.avatar
+                      : callData?.user_call_profile.avatar
+                  }
+                />
+              </div>
               <h3 className="font-bold color-[var(--color-grey-800)]">
                 {user.id === callData?.user_id
                   ? callData.user_receive_profile.fullname
@@ -169,6 +192,7 @@ const Call = () => {
                   ? `Calling ${callData.user_receive_profile.fullname}`
                   : `${callData?.user_call_profile.fullname} is calling you`}
               </p>
+              {isNotAnswer && <p>User is not available</p>}
             </div>
           )}
           <div className="h-[85vh]">
@@ -184,76 +208,77 @@ const Call = () => {
             {!isConnected ? (
               callData?.user_id === user.id ? (
                 <div className="flex gap-4 items-center h-full justify-center ">
-                  <button
-                    onClick={() => toggleMedia("video")}
-                    className={`w-12 h-12 rounded-full flex items-center justify-center bg-[var(--color-grey-300)] ${
+                  <CallButton
+                    className={`${
                       !userState.device.video && "bg-[var(--color-danger)]"
                     }`}
+                    onClick={() => toggleMedia("video")}
                   >
                     {userState.device.video ? (
                       <BsCameraVideo />
                     ) : (
                       <BsCameraVideoOff />
                     )}
-                  </button>
-                  <button
+                  </CallButton>
+                  <CallButton
+                    className="bg-[var(--color-danger)]"
                     onClick={leaveCall}
-                    className="w-12 h-12 rounded-full flex items-center justify-center bg-[var(--color-danger)]"
                   >
                     <ImPhoneHangUp />
-                  </button>
-                  <button
-                    onClick={() => toggleMedia("audio")}
-                    className={`w-12 h-12 rounded-full flex items-center justify-center bg-[var(--color-grey-300)] ${
+                  </CallButton>
+                  <CallButton
+                    className={`${
                       !userState.device.audio && "!bg-[var(--color-danger)]"
                     }`}
+                    onClick={() => toggleMedia("audio")}
                   >
                     {userState.device.audio ? (
                       <BiSolidMicrophone />
                     ) : (
                       <BiSolidMicrophoneOff />
                     )}
-                  </button>
+                  </CallButton>
                 </div>
               ) : (
                 <div className="flex gap-8 items-center h-full justify-center ">
-                  <button
-                    onClick={leaveCall}
-                    className="var(--color-grey-0) w-12 h-12 rounded-full flex items-center justify-center bg-[var(--color-danger)]"
+                  <CallButton
+                    className="bg-[var(--color-danger)]"
+                    onClick={() => {
+                      rejectCall();
+                    }}
                   >
                     <ImPhoneHangUp />
-                  </button>
-                  <button
-                    // disabled={isCreatingParticipant}
-                    onClick={answerCall}
+                  </CallButton>
+                  <CallButton
                     className={`bg-[var(--color-secondary)] var(--color-grey-0) w-12 h-12 rounded-full flex items-center justify-center  ${styles.answerCall}`}
+                    onClick={answerCall}
                   >
                     <BsCameraVideo />
-                  </button>
+                  </CallButton>
                 </div>
               )
             ) : null}
             {isConnected && (
               <div className="flex gap-4 items-center h-full justify-center ">
-                <button
-                  onClick={() => toggleMedia("video")}
-                  className={`w-12 h-12 rounded-full flex items-center justify-center bg-[var(--color-grey-300)] ${
-                    !userState.device.video && "!bg-[var(--color-danger)]"
+                <CallButton
+                  className={`${
+                    !userState.device.video && "bg-[var(--color-danger)]"
                   }`}
+                  onClick={() => toggleMedia("video")}
                 >
                   {userState.device.video ? (
                     <BsCameraVideo />
                   ) : (
                     <BsCameraVideoOff />
                   )}
-                </button>
-                <button
+                </CallButton>
+                <CallButton
+                  className="bg-[var(--color-danger)]"
                   onClick={leaveCall}
-                  className="w-12 h-12 rounded-full flex items-center justify-center bg-[var(--color-danger)]"
                 >
                   <ImPhoneHangUp />
-                </button>
-                <button
+                </CallButton>
+                <CallButton
                   onClick={() => toggleMedia("audio")}
                   className={`w-12 h-12 rounded-full flex items-center justify-center bg-[var(--color-grey-300)] ${
                     !userState.device.audio && "!bg-[var(--color-danger)]"
@@ -264,7 +289,7 @@ const Call = () => {
                   ) : (
                     <BiSolidMicrophoneOff />
                   )}
-                </button>
+                </CallButton>
               </div>
             )}
           </div>
@@ -278,3 +303,25 @@ const Call = () => {
   );
 };
 export default Call;
+
+function CallButton({
+  onClick,
+  children,
+  className,
+}: {
+  onClick: () => void;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`${twMerge(
+        "z-50 w-12 h-12 rounded-full bg-[var(--color-grey-200)] flex items-center justify-center ",
+        className
+      )} `}
+    >
+      {children}
+    </button>
+  );
+}

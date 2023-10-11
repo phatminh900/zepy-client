@@ -38,7 +38,6 @@ const useAddIntoGroup = () => {
   const onSubmit = handleSubmit((data) => {
     if (!data.groupName.trim()) return;
     // if only author not have members
-    console.log(selectedFriend);
     if (selectedFriend.length === 1) {
       toast.error("A group must have at least 2 people");
       return;

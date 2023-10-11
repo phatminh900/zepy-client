@@ -1,9 +1,13 @@
+import { useTranslation } from "react-i18next";
+
 import { useForm } from "react-hook-form";
 import { HiPlus } from "react-icons/hi";
 import { useTodoLists } from "src/features/todos/todos.hook";
 import { useGetUser } from "src/hooks/useAuth";
 
 const TodoSideBarForm = () => {
+  const { t } = useTranslation("todos");
+
   const listName = "listName";
   const {
     register,
@@ -32,7 +36,7 @@ const TodoSideBarForm = () => {
         })}
         type="text"
         className="w-full h-full block outline-none border-none"
-        placeholder="Add a new list"
+        placeholder={t("list.addAList")}
       />
       <button
         className="text-2xl ml-auto text-[var(--color-primary)]"

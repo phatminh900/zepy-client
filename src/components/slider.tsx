@@ -52,7 +52,7 @@ const Slider = ({ data, render, children }: ISlider) => {
   // setInterval(nextSlide, 2000);
   //   }, [nextSlide]);
   return (
-    <div className="h-full ">
+    <div data-testid="slider-container" className="h-full ">
       <ul className="relative overflow-hidden h-[95%] " ref={slidesRef}>
         {data.map(render)}
       </ul>
