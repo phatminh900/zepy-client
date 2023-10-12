@@ -3,7 +3,7 @@ import { useEffect, useContext, useCallback, createContext } from "react";
 import { useCreateCall } from "src/features/call/call.hook";
 import { io } from "socket.io-client";
 
-export const socket = io(`https://zepy-chat-app-server.onrender.com`);
+export const socket = io(`http://localhost:3001`);
 
 function openNewWindowCall(callId: string, roomId: string) {
   void window.open(

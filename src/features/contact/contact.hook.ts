@@ -48,7 +48,11 @@ export const useFriendRequest = () => {
       },
       onError: () => toast.error("There were some errors try again."),
     });
-  const { mutate: acceptFriend, isLoading: isAcceptingFriend } = useMutation({
+  const {
+    mutate: acceptFriend,
+    isLoading: isAcceptingFriend,
+    isSuccess: isAddedFriend,
+  } = useMutation({
     mutationFn: acceptFriendApi,
     onSuccess: async (data) => {
       toast.success("Successfully added a new friend");
@@ -105,6 +109,7 @@ export const useFriendRequest = () => {
     rejectFriend,
     isSendingFriendRequest,
     sendFriendRequest,
+    isAddedFriend,
     isRejectingFriend,
   };
 };

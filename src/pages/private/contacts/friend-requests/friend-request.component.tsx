@@ -5,8 +5,13 @@ import DateCalculator from "src/components/date-calculator.component";
 import { useFriendRequest } from "src/features/contact/contact.hook";
 
 const FriendRequest = ({ request }: { request: IRequestedFriend }) => {
-  const { acceptFriend, rejectFriend, isAcceptingFriend, isRejectingFriend } =
-    useFriendRequest();
+  const {
+    acceptFriend,
+    isAddedFriend,
+    rejectFriend,
+    isAcceptingFriend,
+    isRejectingFriend,
+  } = useFriendRequest();
 
   return (
     <li className="py-4 px-6 md:py-5 md:px-7 bg-[var(--color-grey-0)] shadow-2xl w-full max-w-[80%] md:max-w-[90%]">
@@ -29,7 +34,7 @@ const FriendRequest = ({ request }: { request: IRequestedFriend }) => {
           Reject
         </Button>
         <Button
-          disabled={isAcceptingFriend}
+          disabled={isAcceptingFriend || isAddedFriend}
           onClick={() => {
             const roomId = uuidv4();
             acceptFriend({
