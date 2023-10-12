@@ -45,7 +45,7 @@ const Call = () => {
         autoPlay
         playsInline
         muted
-        className="w-full h-full"
+        className="w-full h-full object-fill"
         style={{
           display:
             (!isConnected && user.id !== callData?.user_id) ||
@@ -101,7 +101,7 @@ const Call = () => {
         ref={userRemoteVideo}
         autoPlay
         playsInline
-        className="w-full h-full"
+        className="w-full h-full object-fill"
         style={{
           display: !remoteState.device.video ? "none" : "block",
         }}
@@ -195,7 +195,7 @@ const Call = () => {
               {isNotAnswer && <p>User is not available</p>}
             </div>
           )}
-          <div className="h-[85vh]">
+          <div className="h-[60vh] md:h-[85vh]">
             <div className="h-full relative block">
               {/* Local video */}
               {localVideo}

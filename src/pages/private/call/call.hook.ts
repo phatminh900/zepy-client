@@ -14,7 +14,7 @@ import { socket } from "src/contexts/call.context";
 import useSound from "src/hooks/useSound.hook";
 
 const useCallHook = (callId: string) => {
-  const TIME_OUT = 30000;
+  const TIME_OUT = 3000000;
   const [isNotAnswer, setIsNotAnswer] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [isRejected, setIsRejected] = useState(false);
