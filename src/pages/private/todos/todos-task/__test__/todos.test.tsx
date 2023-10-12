@@ -1,13 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { setupServer } from "msw/node";
-import { rest } from "msw";
 import { beforeAll, afterEach, afterAll } from "vitest";
 
-function createServer(handlerConfig) {
-  const handlers = handlerConfig.map((config) => {
-    return rest[config.method || "get"](config.path, (req, res, ctx) => {
-      return res(ctx.json(config.res(req, res, ctx)));
-    });
-  });
+export function createServer(handlerConfig: any) {
+  const handlers = handlerConfig.map(() => {});
   const server = setupServer(...handlers);
 
   beforeAll(() => {

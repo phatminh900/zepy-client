@@ -1,4 +1,5 @@
-import supabase, { supabaseUrl } from "./supabase";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import supabase from "./supabase";
 import { AuthError } from "@supabase/supabase-js";
 import { throwError } from "src/utils/error.util";
 import { updateImg } from "src/utils/update-img.util";

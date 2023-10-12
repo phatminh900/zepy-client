@@ -1,7 +1,7 @@
 import styles from "./message.module.css";
 import { HiDotsHorizontal, HiTrash } from "react-icons/hi";
 import Menu from "src/components/menu";
-import { RiDoubleQuotesR } from "react-icons/ri";
+
 const ChatActions = ({
   id,
   position,

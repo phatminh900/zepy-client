@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { useEffect, useContext, useCallback, createContext } from "react";
 import { useCreateCall } from "src/features/call/call.hook";
 import { io } from "socket.io-client";

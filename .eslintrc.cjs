@@ -5,10 +5,17 @@ module.exports = {
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:react-hooks/recommended",
+    "plugin:react/jsx-runtime",
   ],
   parser: "@typescript-eslint/parser",
-  parserOptions: { ecmaVersion: "latest", sourceType: "module" },
-  plugins: ["react-refresh"],
+  parserOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
+  plugins: ["react-refresh", "react"],
   rules: {
     "no-explicit-any": "off",
     "@typescript-eslint/no-non-null-assertion": "off",

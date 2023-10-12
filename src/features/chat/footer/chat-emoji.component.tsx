@@ -3,7 +3,7 @@ import { HiOutlineEmojiHappy } from "react-icons/hi";
 import EmojiPicker, {
   EmojiStyle,
   EmojiClickData,
-  Theme,
+
 } from "emoji-picker-react";
 import useClickOutside from "src/hooks/useClickOutside.hook";
 

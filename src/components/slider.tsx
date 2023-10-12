@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cloneElement, useState, useRef, useEffect, useCallback } from "react";
 import useSound from "src/hooks/useSound.hook";
 import pageTurnMp3 from "src/assets/mp3/page-flip.wav";

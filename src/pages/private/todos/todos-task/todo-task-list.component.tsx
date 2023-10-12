@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+
 import styles from "./todo-task-list.module.css";
 import closeListSound from "src/assets/mp3/close-list.mp3";
 import { HiChevronRight } from "react-icons/hi";
@@ -18,7 +18,6 @@ export enum TASKLISTTYPE {
 
 type ITaskListType = TASKLISTTYPE | "";
 const TodoTaskList = () => {
-  const { t } = useTranslation("todos");
   const [searchParams, setSearchParams] = useSearchParams();
   const defaultOpenTask = searchParams.get(PARAMS.openTask) as ITaskListType;
   const [openList, setOpenList] = useState<ITaskListType>(

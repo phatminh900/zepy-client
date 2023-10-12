@@ -1,3 +1,4 @@
+window.global ||= window;
 import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 

@@ -41,6 +41,7 @@ const useCallHook = (callId: string) => {
     useSound(incomingSound);
   const [isEnd, setIsEnd] = useState(false);
   const { updateUserSocketId } = useUpdateUserCallingSocketId();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [_, setParticipants] = useState<string[]>([]);
   const peerConnections = useRef<{ [key: string]: RTCPeerConnection }>({});
   const localMediaStream = useRef<MediaStream | null>(null);
