@@ -56,8 +56,7 @@ export const useFriendRequest = () => {
     mutationFn: acceptFriendApi,
     onSuccess: async (data) => {
       toast.success("Successfully added a new friend");
-      query.invalidateQueries({ queryKey: [QueryKey.REQUESTED_FRIEND] });
-
+      query.refetchQueries();
       const [user1, user2] = data;
       // after accepting a friend delete a record in friend_request
 

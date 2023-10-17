@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { useLocation } from "react-router-dom";
 
 import { useQueryClient } from "@tanstack/react-query";
@@ -7,8 +7,26 @@ import { useGetUser } from "src/hooks/useAuth";
 
 import { socket } from "src/contexts/call.context";
 import { useUpdateUserStatus } from "src/features/user/user-feature.hook";
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function subscribe(callback: (ev: Event) => void) {
+  window.addEventListener("online", callback);
+  window.addEventListener("offline", callback);
+  return () => {
+    window.removeEventListener("online", callback);
+    window.removeEventListener("offline", callback);
+  };
+}
+function useOnlineStatus() {
+  // ✅ Good: Subscribing to an external store with a built-in Hook
+  return useSyncExternalStore(
+    subscribe, // React won't resubscribe for as long as you pass the same function
+    () => navigator.onLine, // How to get the value on the client
+    () => true // How to get the value on the server
+  );
+}
 const useAuth = () => {
   const query = useQueryClient();
+  const isOnline = useOnlineStatus();
   const { user, isLoading, refetch } = useGetUser();
   const { updateInfo } = useUpdateUserStatus();
   const { pathname } = useLocation();
@@ -16,10 +34,10 @@ const useAuth = () => {
     refetch();
   }, [refetch]);
   useEffect(() => {
-    if (user?.id && !pathname.includes("call")) {
+    if (user?.id && !pathname.includes("call") && isOnline) {
       socket.emit("logged", { userId: user.id });
     }
-  }, [user?.id, pathname]);
+  }, [user?.id, pathname, isOnline]);
   useEffect(() => {
     if (user?.id) {
       return () => {

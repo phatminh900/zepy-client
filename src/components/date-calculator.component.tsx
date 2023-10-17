@@ -30,7 +30,7 @@ const DateCalculator = ({
         mins < 1439 &&
         `${hours} ${hours === 1 ? t("hour") : t("hours")} ${t("ago")}`}
       {/* {seconds < 59 && `${seconds} seconds ago`} */}
-      {mins === 0 && seconds > 1 && `${seconds} ${t("seconds")} ${t("ago")}`}
+      {mins === 0 && seconds > 1 && `few seconds ago`}
       {mins === 0 && seconds == 0 && `${t("now")}`}
       {mins > 1 && mins < 59 && `${mins} ${t("mins")} ${t("ago")}`}
 
