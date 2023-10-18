@@ -8,6 +8,7 @@ This app has a wide range of modern features, including:
 - Filtering
 - Querying
 - I18Next
+- supabase
 - And much more...
 
 ## Technology Stack
