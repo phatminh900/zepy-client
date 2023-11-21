@@ -16,7 +16,7 @@ const ChatLists = () => {
       </p>
     );
   return (
-    <ul>
+    <ul className="h-4/5 overflow-y-scroll">
       <Menu>
         {filteredConversation?.map((conversation) => (
           <Conversation

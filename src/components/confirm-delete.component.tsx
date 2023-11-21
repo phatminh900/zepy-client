@@ -27,7 +27,7 @@ function ConfirmDelete({
 
       <div className="flex justify-end gap-3">
         <Button
-          variation="neutral"
+          variation="danger"
           disabled={disabled}
           onClick={(e) => {
             e.preventDefault();

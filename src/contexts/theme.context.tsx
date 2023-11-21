@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components */
 import { useContext, useEffect, createContext } from "react";
 import { LocalStorage } from "src/constants/browser.constant";
 import useLocalStorage from "src/hooks/useLocalStorage";
@@ -40,6 +39,7 @@ const ThemeContextProvider = ({ children }: Children) => {
     </ThemeContext.Provider>
   );
 };
+// eslint-disable-next-line react-refresh/only-export-components
 export const useThemeContext = () => {
   const ctx = useContext(ThemeContext);
   if (!ctx)

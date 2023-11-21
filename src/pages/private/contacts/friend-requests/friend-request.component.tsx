@@ -2,16 +2,15 @@ import AvatarTitle from "src/components/avatar-title";
 import { v4 as uuidv4 } from "uuid";
 import Button from "src/components/button";
 import DateCalculator from "src/components/date-calculator.component";
-import { useFriendRequest } from "src/features/contact/contact.hook";
+import {
+  useAcceptFriendRequest,
+  useRejectFriend,
+} from "src/features/contact/contact.hook";
 
 const FriendRequest = ({ request }: { request: IRequestedFriend }) => {
-  const {
-    acceptFriend,
-    isAddedFriend,
-    rejectFriend,
-    isAcceptingFriend,
-    isRejectingFriend,
-  } = useFriendRequest();
+  const { acceptFriend, isAcceptingFriend, isAddedFriend } =
+    useAcceptFriendRequest();
+  const { isRejectingFriend, rejectFriend } = useRejectFriend();
 
   return (
     <li className="py-4 px-6 md:py-5 md:px-7 bg-[var(--color-grey-0)] shadow-2xl w-full max-w-[80%] md:max-w-[90%]">

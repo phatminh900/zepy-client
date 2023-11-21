@@ -1,6 +1,6 @@
-import React from "react";
+import type { ComponentProps } from "react";
 import { twMerge } from "tailwind-merge";
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends ComponentProps<"button"> {
   variation?: "primary" | "neutral" | "text" | "danger";
   children: React.ReactNode;
 }
