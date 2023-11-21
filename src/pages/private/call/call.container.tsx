@@ -102,7 +102,7 @@ const Call = () => {
         autoPlay
         playsInline
         className="w-full h-full object-fill"
-        style={{w
+        style={{
           display: !remoteState.device.video ? "none" : "block",
         }}
       />

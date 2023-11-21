@@ -6,7 +6,7 @@ import OnlineStatus from "src/components/online-status.component";
 import Profile from "src/components/profile";
 import { ROUTES } from "src/constants/navigation.constant";
 import { PARAMS } from "src/constants/searchParams.constant";
-import { useFriendRequest } from "src/features/contact/contact.hook";
+import { useDeleteFriend } from "src/features/contact/contact.hook";
 import { useGetUser } from "src/hooks/useAuth";
 import useOpenTableMobile from "src/hooks/useOpenTab-mobile.hook";
 interface IFriendProps extends User {
@@ -23,8 +23,8 @@ const Friend = ({
 }: IFriendProps) => {
   const { user } = useGetUser();
   const { isMoBile } = useOpenTableMobile();
-
-  const { deleteFriend, isDeletingFriend } = useFriendRequest();
+  const { deleteFriend, isDeletingFriend } = useDeleteFriend();
+  // const { deleteFriend, isDeletingFriend } = useFriendRequest();
   let chatPath = ROUTES.CHATS + "/" + roomId;
   if (isMoBile) {
     // Open

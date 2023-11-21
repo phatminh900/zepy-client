@@ -5,6 +5,7 @@ import {
   useFriendRequest,
   useGetAllFriends,
   useGetFriendRequests,
+  useRejectFriend,
 } from "src/features/contact/contact.hook";
 import { useGetUser } from "src/hooks/useAuth";
 import useSearchContact from "./search-contact.hook";
@@ -13,7 +14,7 @@ import { ROUTES } from "src/constants/navigation.constant";
 const useSearchResult = () => {
   const { user } = useGetUser();
   const navigate = useNavigate();
-  const { rejectFriend } = useFriendRequest();
+  const { rejectFriend } = useRejectFriend();
   const { friends } = useGetAllFriends(user!.id);
   const { friendRequests } = useGetFriendRequests();
   const [searchParams] = useSearchParams();
