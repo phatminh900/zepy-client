@@ -21,8 +21,8 @@ const useClickOutside = (close: () => void, isCapturing = false) => {
     };
     document.addEventListener("keydown", closeEscapeKey);
     document.addEventListener("click", handleClickOutside, isCapturing);
+    // document.removeEventListener("click", handleClickOutside, isCapturing);
     return () => document.removeEventListener("keydown", closeEscapeKey);
-    document.removeEventListener("click", handleClickOutside, isCapturing);
   }, [isCapturing, close]);
   return { ref };
 };
